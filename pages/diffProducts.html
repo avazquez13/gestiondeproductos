@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+	<title>WISE Solutions - Gestión de Productos</title>
+	<link rel="stylesheet" href="../css/styles.css">
+	<script type="text/javascript" src="../javascript/jquery-1.12.2.min.js"></script>
+	<script type="text/javascript" src="../javascript/functions.js"></script> 
+</head>
+<body>
+    <div class="main">
+    	<div class="columns column-1">
+    	</div>
+    	
+    	<div class="columns column-2">
+    		<div class="content">
+    			<img src="../images/logo.jpg" width="220" height="auto">
+    			<h2>WISE Solutions - Gestión de Productos</h2>
+    			<a id="menuLink" href="../index.html">Volver a Inicio</a>
+    		</div>
+    		<div id="formContainer">
+    			<form method="post"  enctype="multipart/form-data" name="updateProductsForm" id="updateProductsForm" >
+    				<div style="display: none;">
+    					<input type="hidden" value="diffProductApi" id="apicall" name="apicall">
+    				</div>
+    				
+    				<p><span><label for="updateStock">Identificar Productos No Actualizados?</label></span>
+    				<input type="checkbox" id="updateStock" name="updateStock" value=""></p>
+    				
+    				<p><input type="button" class="btn" value="IDENTIFICAR PRODUCTOS QUE NO EISTEN EN TIENDA" id="submit_it" name="submit" onclick="sendData();"></p>
+    			</form>
+    		</div>
+    		<div id="responseContainer">
+    		</div>
+      	</div>
+
+    	<div class="columns column-3">
+    	</div>
+	</div>   
+</body>
+</html>

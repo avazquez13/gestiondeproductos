@@ -134,8 +134,6 @@ class WiseClient extends BaseClient{
 
 		$this->_RESPONSE = $this->process($pl);
 
-		$this->printCounters();
-
 		echo $this->_RESPONSE;
 		return;
 	}
@@ -195,8 +193,9 @@ class WiseClient extends BaseClient{
 				$this->countDISCARD += 1;
 			}
 			$this->countTOTAL += 1;
-			sleep(3);
 		}
+		
+		$this->printCounters();
 
 		$response = array(
 				'Succeeded' => $this->countSUCCESS,

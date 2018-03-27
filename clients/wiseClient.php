@@ -281,8 +281,10 @@ class WiseClient extends BaseClient{
 				$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] processProduct() - ERROR El producto no se ha actualizado: " . $ce->getMessage());
 			}
 			$bSuccess = FALSE;
+		} finally {
+			unset($woocommerce);	
 		}
-
+		
 		return $bSuccess;
 	}
 

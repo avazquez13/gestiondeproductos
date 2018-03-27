@@ -1,0 +1,24 @@
+WISE Solutions INTEGRATION APPLICATION Logging Started...
+[26-Mar-2018:18:52:05] [interface] [DEBUG] - [baseClient] exec() - APICALL: updateProductApi
+[26-Mar-2018:18:52:10] [interface] [DEBUG] - [database] init - ERROR: 
+[26-Mar-2018:18:52:10] [interface] [DEBUG] - [wiseClient] checkConfig() - WARNING Fallo en la Configuración
+[26-Mar-2018:18:52:10] [interface] [DEBUG] - [productList] setProductList() - Se han leido 3 productos
+[26-Mar-2018:18:52:10] [interface] [DEBUG] - [productList] setProductList() - Fichero C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[26-Mar-2018:18:52:19] [interface] [DEBUG] - [wiseClient] printCounters() - Se han procesado 3 productos
+[26-Mar-2018:18:52:19] [interface] [DEBUG] - [wiseClient] printCounters() - Se han modificado con exito 0 productos
+[26-Mar-2018:18:52:19] [interface] [DEBUG] - [wiseClient] printCounters() - 0 productos han fallado al intentar actualizar
+[26-Mar-2018:18:52:19] [interface] [DEBUG] - [wiseClient] printCounters() - 3 productos no existen en la tienda online
+[26-Mar-2018:19:18:50] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[26-Mar-2018:19:18:50] [interface] [DEBUG] - [baseClient] exec() - APICALL: updateProductApi
+[26-Mar-2018:19:18:51] [interface] [DEBUG] - [wiseClient] checkConfig() - Configuración OK
+[26-Mar-2018:19:18:51] [interface] [DEBUG] - [wiseClient] checkConfig() - Timestamp Configurado: 1522102730
+[26-Mar-2018:19:18:51] [interface] [DEBUG] - [productList] setProductList() - Se han leido 3 productos
+[26-Mar-2018:19:18:51] [interface] [DEBUG] - [productList] setProductList() - Fichero C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[26-Mar-2018:19:18:54] [interface] [DEBUG] - [wiseClient] processProduct() - Procesando Producto: 207400
+[26-Mar-2018:19:18:58] [interface] [DEBUG] - [wiseClient] process() - count: 1
+[26-Mar-2018:19:19:01] [interface] [DEBUG] - [wiseClient] processProduct() - Procesando Producto: 207388
+[26-Mar-2018:19:19:04] [interface] [DEBUG] - [wiseClient] process() - count: 2
+[26-Mar-2018:19:19:07] [interface] [DEBUG] - [wiseClient] printCounters() - Se han procesado 3 productos
+[26-Mar-2018:19:19:07] [interface] [DEBUG] - [wiseClient] printCounters() - Se han modificado con exito 2 productos
+[26-Mar-2018:19:19:07] [interface] [DEBUG] - [wiseClient] printCounters() - 0 productos han fallado al intentar actualizar
+[26-Mar-2018:19:19:07] [interface] [DEBUG] - [wiseClient] printCounters() - 1 productos no existen en la tienda online

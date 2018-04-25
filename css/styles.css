@@ -14,11 +14,9 @@ div.columns {
 }
 .main {
     width:100%;
-    margin-top: 200px;
+    margin-top: 40px;
     background-color: #D2CDE6;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    
+    padding-top: 30px;    
 }
 
 .column-1 {
@@ -26,7 +24,7 @@ div.columns {
 }
 
 .column-2 {
-	width: 40%;
+	width: 50%;
 }
 
 .column-3 {
@@ -37,6 +35,23 @@ div.columns {
 	text-align: center;
 }
 
+#footer {
+	font-size: 13px;
+	color: #ffffff;
+	text-align: center;
+}
+
+#footer a:link {
+    color: #FFFFFF;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+#footer a:hover {
+    color: #A7318F;
+    background-color: transparent;
+    text-decoration: none;
+}
 
 /* --------------------------------------------------------	*/
 /*  Forms */
@@ -47,14 +62,14 @@ div#responseContainer {
     overflow: auto;
     width:100%;
     text-align: center;
-    margin-top: 50px;
+    margin-top: 40px;
 }
 
 div#responseMessage {
     overflow: auto;
     width:100%;
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 div#tableContainer {
@@ -70,46 +85,36 @@ div#tableContainer {
 	
 }
 
+tr {
+	line-height: 10px;
+}
+
 tr:nth-child(even) {
-	background-color: #f2f2f2;
+	background-color: #bebebe;
 } 
 
+tr:nth-child(odd) {
+	background-color: #919191;
+}
+
 th, td {
-    border: 1px solid #ddd;
+    border: 1px solid #fff;
     padding-left: 25px;
-    font-size: 20px;
+    font-size: 16px;
 } 
 
 .response {
-	font-size: 26px;
+	font-size: 20px;
 	font-weight: 500;
 	color: #ff0000;
 }
 
-.responseContent {
-	font-size: 22px;
-	font-weight: 500;
-}
-
-.text-field {
-  height:20px;
-  width:93%;
-  padding:16px 12px 14px 12px; 
-  margin-top:10px;
-  background:#D2CDE6;
-  border-radius:0px;
-  border:0px;
-}
-
-.textarea-field {
-  height:80px;
-  width:93%;
-  padding:16px 12px 14px 12px; 
-  margin-top:10px;
-  background:#D2CDE6;
-  border-radius:0px;
-  border:0px;
-  resize:none;
+.responseContentText,
+.responseContentValue {
+	font-size: 16px !important;
+	font-weight: 500 !important;
+	color: #000000 !important;
+	padding: 0px;
 }
 
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */

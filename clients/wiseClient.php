@@ -44,12 +44,18 @@ require_once("Automattic\WooCommerce\HttpClient\Response.php");
 use Automattic\WooCommerce\Client;
 
 require_once("clients/baseClient.php");
-require_once("classes/database.php");
-require_once("classes/messages.php");
-require_once("classes/customexception.php");
+
 require_once("classes/product.php");
 require_once("classes/productList.php");
-require_once("classes/reports.php");
+require_once("classes/database.php");
+require_once("classes/file.php");
+require_once("classes/messages.php");
+require_once("classes/customexception.php");
+
+require_once("code/reports.php");
+require_once("code/productData.php");
+require_once("code/routines.php");
+
 require_once("log/Logger.php");
 
 class WiseClient extends BaseClient{
@@ -64,7 +70,8 @@ class WiseClient extends BaseClient{
 		// SQL CREATE TABLE - wise_products_timestamp
 		$sqlCreateProductsTimestamp = "CREATE TABLE IF NOT EXISTS " . $TABLE_TIMESTAMP . "
 										(`id` INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-										`last_update` INT NOT NULL)
+										`last_update` INT NOT NULL,
+										`model` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL)
 										ENGINE=InnoDB";
 
 		// SQL CREATE TABLE - wise_products_nolist
@@ -79,7 +86,7 @@ class WiseClient extends BaseClient{
 										ENGINE=InnoDB";
 
 		// SQL INSERT TIMESTAMP - wise_products_timestamp
-		$sqlInsertTimestamp = "INSERT INTO " . $TABLE_TIMESTAMP . "(`last_update`) VALUES (" . $this->_TIMESTAMP . ")";
+		$sqlInsertTimestamp = "INSERT INTO " . $TABLE_TIMESTAMP . "(`last_update`, `model`) VALUES (" . $this->_TIMESTAMP . ", " . $this->getModel() . ")";
 
 		// SQL QUERIES FOR CHECKUPS
 		$sqlSelectProductsTimestamp = "SELECT * FROM " . $TABLE_TIMESTAMP;
@@ -121,106 +128,130 @@ class WiseClient extends BaseClient{
 		return $retVal;
 	}
 
-	protected function updateProductApiCall() {
+	protected function getProductDataApiCall() {
+		$pd = new ProductData();
+		$pl = $pd->getProductsFromFile($this->getModel());
+		echo json_encode($pl['products']);
+		return;
+	}
+	
+	protected function updateProductsApiCall() {
 		if (!$this->checkConfig()) {
 			echo utf8_encode(Messages::BAD_CONFIG);
 			return FALSE;
 		}
-
-		$updateStock = ($this->_PARAMS['updateStock'] == 'true');
-		$pList = new productList();
-		$pList->setProductList($updateStock);
-		$pl = $pList->getProductList();
-
-		$this->_RESPONSE = $this->process($pl);
-
-		echo $this->_RESPONSE;
+		
+		$pd = new ProductData();
+		$pl = $pd->getProductsFromFile($this->getModel());
+		$this->_RESPONSE = $this->process($pl['products']);
+		echo json_encode($this->_RESPONSE);
 		return;
 	}
 
-	protected function diffProductApiCall() {
-		$generateNoList = ($this->_PARAMS['updateStock'] == 'true');
-
-		$pList = new productList();
-		$pList->setProductList(false);
-		$pl = $pList->getProductList();
-
+	protected function getProductsNotInStoreApiCall() {
+		$pd = new ProductData();
+		$pl = $pd->getProductsFromFile($this->getModel());
+		$aNoStore = $pd->findProductsNotInStore($pl['products']);
+		
 		$reports = new reports();
-		$result1 = $reports->generateNoStoreReport($pl);
-
-		if ($generateNoList) {
-			// Identificar Productos que existen en la Tienda Online y no figuran en la Lista de Productos!
-			$pList1 = new productList();
-			$pList1->setStoreProductList();
-			$storeList = $pList1->getStoreProductList();
-			$result2 = $reports->generateNoListReport($storeList);
-			echo $this->_RESPONSE = json_encode(array_merge($result1, $result2));
-		} else {
-			echo $this->_RESPONSE = json_encode($result1);
-		}
+		$this->_RESPONSE = $reports->generateNoStoreReport($aNoStore);
+		$this->_RESPONSE['Model'] = $this->getModel();
+		echo json_encode($this->_RESPONSE);
 		return;
+	}
+	
+	protected function getProductsNotInFileApiCall() {
+		$pdFile = new ProductData();
+		$prodcutsFromFile = $pdFile->getProductsFromFile($this->getModel());
+		
+		$pdDB = new ProductData();
+		$prodcutsFromStore = $pdDB->getProductsFromStore($this->getModel());
+		
+		$reports = new reports();
+		$this->_RESPONSE = $reports->generateNoFileReport($prodcutsFromFile, $prodcutsFromStore);
+		$this->_RESPONSE['Model'] = ($this->getModel() != null ? $this->getModel() : 'TODOS');
+		
+		echo json_encode($this->_RESPONSE);
 	}
 
 	protected function process($pList) {
-		for ($i = 0; $i < count($pList); $i++) {
-			$product = $pList[$i]->getProduct();
-
-			if ($product[0]['value'] > 0) {
-
-				// Producto con ID - Existe en la tienda y va a ser actualizado.
-				$result = $this->processProduct($product);
-
-				if ($this->_Logger->isDebugOn()) {
-					$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] process() - count: " . $i);
-				}
-
-				if ($result) {
-					// Producto Actualizado OK
-					$product[10]['value'] = Product::_OP_SUCCESS;
+		foreach($pList as $key => $product) {
+			$result = $this->processProduct($product);
+			
+			switch ($result) {
+				case 0: // SUCCESS
 					$this->countSUCCESS += 1;
-				} else {
-					// Producto No Actualizado - FAILURE
-					$product[10]['value'] = Product::_OP_FAILED;
+					break;
+				case 1: // FAIL
 					$this->countFAIL += 1;
-
+					
 					if ($this->_Logger->isDebugOn()) {
 						$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] process() - ERROR - Product Update Failed for Product SKU " . $product[4]['value']);
 					}
-				}
-			} else {
-				// Producto sin ID - No existe en la tienda.
-				$product[10]['value'] = Product::_OP_DISCARDED;
-				$this->countDISCARD += 1;
+					
+					break;
+				case 2: // DISCARD
+					$this->countDISCARD += 1;
+					break;
 			}
+
 			$this->countTOTAL += 1;
 		}
 		
 		$this->printCounters();
 
 		$response = array(
+				'Model' => $this->getModel(),
 				'Succeeded' => $this->countSUCCESS,
 				'Failed' => $this->countFAIL,
 				'Discarded' => $this->countDISCARD,
 				'Total' => $this->countTOTAL
 		);
 
-		return json_encode($response);
+		return $response;
 	}
 
 	protected function processProduct($product) {
 		// Updates [sale_price, regular_price, stock_quantity, last_update_api]
+		// Return Values: 0=success | 1=failure | 2=discarded
+		$opResult = 0;
 
-		$bSuccess = FALSE;
-
+		// Read Product Data
 		$id				= $product[0]['value'];
+		$model			= $product[1]['value'];
+		$title			= $product[2]['value'];
+		$status			= $product[3]['value'];
 		$sku			= $product[4]['value'];
-		$regular_price 	= str_replace('.', ',', $product[6]['value']);
-		$sale_price 	= str_replace('.', ',', $product[7]['value']);
+		$list_price		= $product[5]['value'];
+		$regular_price 	= $product[6]['value'];
+		$sale_price 	= $product[7]['value'];
 		$stock			= $product[8]['value'];
-		$update_stock 	= $product[9]['value'];
-		$timestamp	 	= $this->_TIMESTAMP;
-
-		// Setting Meta Data - last update api
+		$timestamp	 	= $product[9]['value'];
+		
+		// Check if Product exists in Store
+		If ($id == null) {
+			$pd = new ProductData();
+			$prodId = $pd->getProductIdBySKU($sku);
+			
+			if ($prodId == -1) {
+				// Producto sin ID - No existe en la tienda.
+				$opResult = WiseClient::_OP_DISCARDED;
+				return $opResult;
+			}
+		} else {
+			$prodId = $id;
+		}
+				
+		// Sale Price = List Price + Margin (default 15%)
+		$sale_price = routines::calculateSalePrice($list_price, $this->getMargin());
+			
+		// Regular Price = Sale Price + Percentage Online (default 20%)
+		$regular_price = routines::calculateRegularPrice($sale_price, $this->getDiscount());
+		
+		// Define Process TimeStamp
+		$timestamp = $this->getProcessTimestamp();
+		
+		// Setting Meta Data - last_update_api
 		$last_update = new stdClass();
 		$last_update->key = 'last_update_api';
 		$last_update->value = $timestamp;
@@ -228,38 +259,36 @@ class WiseClient extends BaseClient{
 		$metaData = array();
 		$metaData[] = $last_update;
 
-		if ($update_stock > 0) {
+		if ($this->getUpdateStock() > 0) {
 			// Update Stock
 			$data = [
-					'regular_price' => $regular_price,
-					'sale_price' => $sale_price,
+					'regular_price' => preg_replace('/[^0-9-.]+/', '', strval($regular_price)),
+					'sale_price' => preg_replace('/[^0-9-.]+/', '', strval($sale_price)),
 					'stock_quantity' => $stock,
 					'meta_data' => $metaData
 			];
 
 			$data = $data . ['stock_quantity' => $stock];
 		} else {
-			// No Update Stock
+			// Do Not Update Stock
 			$data = [
-					'regular_price' => $regular_price,
-					'sale_price' => $sale_price,
+					'regular_price' => preg_replace('/[^0-9-.]+/', '', strval($regular_price)),
+					'sale_price' => preg_replace('/[^0-9-.]+/', '', strval($sale_price)),
 					'meta_data' => $metaData
 			];
 		}
-
-		// WooCommerce Endpoint
-		$endpoint = 'products/' . $id;
+		
+				// WooCommerce Endpoint
+		$endpoint = 'products/' . $prodId;
 
 		try {
 			// WOOCMMERCE - REST API!!!!
-			if ($this->_Logger->isDebugOn()) {
-				$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] processProduct() - Procesando Producto: " . $product[4]['value']);
-			}
 			$woocommerce = new Client($this->_STORE_URL, $this->_CLIENTKEY, $this->_SECRETKEY, ['wp_api' => true, 'version' => 'wc/v2',  'query_string_auth' => true]);
+			
 			$response = $woocommerce->put($endpoint, $data);
-
-			if ($response->id == $id) {
-				$bSuccess = TRUE;
+			
+			if ($response->id == $prodId) {
+				$opResult = WiseClient::_OP_SUCCEDED;
 			} else {
 				throw new CustomException(Messages::RESULT_ERROR);
 			}
@@ -268,28 +297,31 @@ class WiseClient extends BaseClient{
 			if ($this->_Logger->isDebugOn()) {
 				$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] processProduct() - ERROR - WooCommerce REST API: " . $e);
 			}
-			$bSuccess = FALSE;
+			$opResult = WiseClient::_OP_FAILED;
 		} catch (Exception $ex) {
 			// Producto No Actualizado - FAILURE
 			if ($this->_Logger->isDebugOn()) {
-				$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] processProduct() - EXCEPTION: " . $e);
+				$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] processProduct() - EXCEPTION: " . $ex);
 			}
-			$bSuccess = FALSE;
+			$opResult = WiseClient::_OP_FAILED;
 		} catch (CustomException $ce) {
 			if ($this->_Logger->isDebugOn()) {
-				$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] processProduct() - ERROR El producto no se ha actualizado: " . $ce->getMessage());
+				$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] processProduct() - ERROR - El producto no se ha actualizado: " . $ce->getMessage());
 			}
-			$bSuccess = FALSE;
+			$opResult = WiseClient::_OP_FAILED;
 		} finally {
-			unset($woocommerce);	
+			unset($woocommerce);
 		}
 		
-		return $bSuccess;
-	}
-
+		return $opResult;
+	}	
+	
 	protected function printCounters() {
 		if ($this->_Logger->isDebugOn()) {
 			$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] printCounters() - Se han procesado " . $this->countTOTAL . " productos" );
+			$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] printCounters() - Productos Procesados: " . $this->getModel());
+			$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] printCounters() - Margen Aplicado: " . $this->getMargin() . "%");
+			$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] printCounters() - Descuento Online Aplicado: " . $this->getDiscount() . "%");
 			$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] printCounters() - Se han modificado con exito " . $this->countSUCCESS . " productos" );
 			$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] printCounters() - " . $this->countFAIL . " productos han fallado al intentar actualizar" );
 			$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] printCounters() - " . $this->countDISCARD . " productos no existen en la tienda online" );

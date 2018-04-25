@@ -33,49 +33,19 @@
     			<a id="menuLink" href="../index.html">Volver a Inicio</a>
     		</div>
     		<div id="formContainer">
-    			<form method="post"  enctype="multipart/form-data" name="updateProductsForm" id="updateProductsForm" >
+    			<form method="post"  enctype="multipart/form-data" name="listProductsForm" id="listProductsForm" >
     				<div style="display: none;">
-    					<input type="hidden" value="updateProductsApi" id="apicall" name="apicall">
+    					<input type="hidden" value="getProductsNotInStoreApi" id="apicall" name="apicall">
+    					<input type="hidden" value="" id="margin" name="margin">
+    					<input type="hidden" value="" id="discount" name="discount">
+    					<input type="hidden" value="" id="updateStock" name="updateStock">
     				</div>
     				
     				<p><span><label for="model">Modelo</label></span>
 	    				<select id="model"></select> 
 					</p>
     				
-    				<p><span><label for="margin">Margen (%)</label></span>
-	    				<select id="margin">
-	    					<option value="5">5%</option>
-  							<option value="10">10%</option>
-  							<option selected="selected" value="15">15%</option>
-  							<option value="20">20%</option>
-  							<option value="25">25%</option>
-  							<option value="30">30%</option>
-  							<option value="35">35%</option>
-  							<option value="40">40%</option>
-  							<option value="45">45%</option>
-  							<option value="50">50%</option>
-	    				</select> 
-					</p>
-					
-					<p><span><label for="discount">Descuento Online (%)</label></span>
-	    				<select id="discount">
-	    					<option value="5">5%</option>
-  							<option value="10">10%</option>
-  							<option value="15">15%</option>
-  							<option selected="selected" value="20">20%</option>
-  							<option value="25">25%</option>
-  							<option value="30">30%</option>
-  							<option value="35">35%</option>
-  							<option value="40">40%</option>
-  							<option value="45">45%</option>
-  							<option value="50">50%</option>
-	    				</select> 
-					</p>
-    				
-    				<p><span><label for="updateStock">Actualiza Stock?</label></span>
-    				<input type="checkbox" id="updateStock" name="updateStock" value=""></p>
-    				
-    				<p><input type="button" class="btn" value="ACTUALIZAR PRODUCTOS" id="submit_it" name="submit" onclick="sendData();"></p>
+    				<p><input type="button" class="btn" value="IDENTIFICAR PRODUCTOS QUE NO EXISTEN EN TIENDA" id="submit_it" name="submit" onclick="sendData();"></p>
     			</form>
     		</div>
     		<div id="responseContainer">
@@ -90,4 +60,5 @@
   <p>© Copyright 2018 - <script>document.write(new Date().getFullYear());</script> | WISE Solutions S.A. | Todos los Derechos Reservados | Powered by <a href='http://www.wisesolutions.com.ar' target='_blank'>WISE Solutions</a></p>
   <p>Contacto: <a href="mailto:info@wisesolutions.com.ar">info@wisesolutions.com.ar</a></p>
 </footer> 
+</html>
 </html>

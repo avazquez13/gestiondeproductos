@@ -17,13 +17,15 @@ abstract class BaseClient {
 	const SET_ENTRY_API			= "setEntryListApi";
 	
 	// PRODUCT API CALLS
-	const UPDATE_PRODUCT_API	= "updateProductApi";
-	const DIFF_PRODUCT_API		= "diffProductApi";
+	const GET_PRODUCT_DATA_API			= "getProductDataApi";
+	const UPDATE_PRODUCTS_API			= "updateProductsApi";
+	const GET_PRODUCTS_NOT_STORE_API 	= "getProductsNotInStoreApi"; // Products that are in the LIST but do not exist in the STORE
+	const GET_PRODUCTS_NOT_FILE_API 	= "getProductsNotInFileApi";  // Products that are in the STORE but do not exist in the LIST
 	
-	// CLIENT PARAMETERS
-	protected $_PARAMS;
-	protected $_APICALL;
-	protected $_TIMESTAMP;
+	// Operation STATUS
+	const _OP_SUCCEDED 	= 0;
+	const _OP_FAILED 	= 1;
+	const _OP_DISCARDED = 2;
 	
 	// APPLICATION CONFIG - ini file
 	protected $_APPNAME;
@@ -44,6 +46,16 @@ abstract class BaseClient {
 	protected $countFAIL;
 	protected $countDISCARD;
 	
+	// CLIENT REQUEST
+	protected $_PARAMS;
+	protected $_APICALL;			// API Call to process
+	protected $_MODEL;				// Product Model to Update (TODOS=ALL)
+	protected $_MARGIN;				// Product Margin to apply to List Price (Default=15%)
+	protected $_DISCOUNT;			// Product Discount for online store (Default=20%)
+	protected $_UPDATESTOCK;		// If Product Stock quantity must be updated (0=yes | -1=no)
+	//protected $_PRODUCTFIELDS;	// Product Fields (array)
+	protected $_TIMESTAMP;			// PROCESS TIMESTAMP
+	
 	// CLIENT RESPONSE
 	protected $_RESPONSE;
 	
@@ -60,7 +72,7 @@ abstract class BaseClient {
 		$this->_RESPONSE = NULL;
 		$this->_PARAMS = NULL;
 		$date = new DateTime();
-		$this->_TIMESTAMP = $date->getTimestamp();
+		$this->setProcessTimestamo($date->getTimestamp());
 		
 		$this->countTOTAL 	= 0;
 		$this->countSUCCESS = 0;
@@ -90,6 +102,12 @@ abstract class BaseClient {
 	
 	public function setParams($params) {
 		$this->_PARAMS = $params;
+		
+		$this->setApiCall($this->_PARAMS['apicall']);
+		$this->setModel($this->_PARAMS['model']);
+		$this->setMargin($this->_PARAMS['margin']);
+		$this->setDiscount($this->_PARAMS['discount']);
+		$this->setUpdateStock($this->_PARAMS['updateStock']);
 	}
 	
 	public function getApiCall() {
@@ -100,24 +118,81 @@ abstract class BaseClient {
 		$this->_APICALL = $Api;
 	}
 	
-	abstract protected function updateProductApiCall();
-	abstract protected function diffProductApiCall();
+	public function getModel() {
+		return $this->_MODEL;
+	}
+	
+	public function setModel($model) {
+		$this->_MODEL = $model;
+	}
+	
+	public function getMargin() {
+		return $this->_MARGIN;
+	}
+	
+	public function setMargin($margin) {
+		$this->_MARGIN = $margin;
+	}
+	
+	public function getDiscount() {
+		return $this->_DISCOUNT;
+	}
+	
+	public function setDiscount($discount) {
+		$this->_DISCOUNT = $discount;
+	}
+	
+	public function getUpdateStock() {
+		return $this->_UPDATESTOCK;
+	}
+	
+	public function setUpdateStock($updateStock) {
+		$this->_UPDATESTOCK = $updateStock;
+	}
+	
+	public function isUpdateStock() {
+		if ($this->_UPDATESTOCK > -1)
+			return true;
+		else
+			return false;
+	}
+	
+	public function getProcessTimestamp() {
+		return $this->_TIMESTAMP;
+	}
+	
+	public function setProcessTimestamo($time) {
+		$this->_TIMESTAMP = $time;
+	}
+		
+	abstract protected function updateProductsApiCall();
+	abstract protected function getProductDataApiCall();
+	abstract protected function getProductsNotInStoreApiCall();
+	abstract protected function getProductsNotInFileApiCall();
 	
 	public function exec() {
-		$api = $this->_PARAMS['apicall'];
+		$api = $this->getApiCall();
 		
 		if ($this->_Logger->isDebugOn()) {
 			$this->_Logger->writeLogFile("[DEBUG] - [baseClient] exec() - APICALL: " . $api);
 		}
 		
 		switch ($api) {
-			case self::UPDATE_PRODUCT_API:
-				$this->setApiCall(self::UPDATE_PRODUCT_API);
-				$this->updateProductApiCall();
+			case self::UPDATE_PRODUCTS_API:
+				$this->setApiCall(self::UPDATE_PRODUCTS_API);
+				$this->updateProductsApiCall();
 				break;
-			case self::DIFF_PRODUCT_API:
-				$this->setApiCall(self::DIFF_PRODUCT_API);
-				$this->diffProductApiCall();
+			case self::GET_PRODUCT_DATA_API:
+				$this->setApiCall(self::GET_PRODUCT_DATA_API);
+				$this->getProductDataApiCall();
+				break;
+			case self::GET_PRODUCTS_NOT_STORE_API:
+				$this->setApiCall(self::GET_PRODUCTS_NOT_STORE_API);
+				$this->getProductsNotInStoreApiCall();
+				break;
+			case self::GET_PRODUCTS_NOT_FILE_API:
+				$this->setApiCall(self::GET_PRODUCTS_NOT_FILE_API);
+				$this->getProductsNotInFileApiCall();
 				break;
 			case "":
 				http_response_code(400);
@@ -131,5 +206,4 @@ abstract class BaseClient {
 	}
 	
 }
-
 ?>

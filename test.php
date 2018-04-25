@@ -27,54 +27,59 @@ use Automattic\WooCommerce\Client;
 )
 */
 
-// $time = new stdClass( id = 38218 [key] => last_update_api [value] => 1518560711 ) 
-$time = new stdClass();
-$time->key = 'last_update_api';
-$time->value = '333333333';
-
-$t = array();
-$t[] = $time;
-
-
-$time2 = array	();
-$time2[0] = 38218;
-$time2[1] = 'last_update_api';
-$time2[2] = '1111111111';
-
-$endpoint = 'products';
-		
-$woocommerce = new Client(
-		'https://www.yokohamapalermo.com.ar/', 
-		'ck_dba953dc5bc6af8d7cea0824dd181bc3de660369', 
-		'cs_9e42a93a406857ba843739cb8a86361cf188c41e', 
-		['wp_api' => true, 'version' => 'wc/v2',  'query_string_auth' => true]);
-
+/*
 $data = [
 		'regular_price' => '9999',
 		'sale_price' => '6666',
 		'meta_data' => $t
 ];
-
-/*
-$response = $woocommerce->get('products',array( 'filter[limit]' => 100 ));
-print_r($response);
-$count = 0 ;
-foreach ($response as $storeProduct) {
-	$count += 1;
-	echo ($storeProduct->id . "\r");
-}
-echo ("   count   " . $count);
 */
 
-$mysqli = new mysqli('localhost', 'yokohama',	'yoko', 'yokohama');
-$sql = "SELECT * FROM wise_products_timestamp ORDER BY id DESC LIMIT 1";
-$r = $mysqli->query($sql);
-
-$t = mysqli_fetch_assoc($r)['last_update'];
 
 
-print_r($t);
+// Updates [sale_price, regular_price, stock_quantity, last_update_api]
+// Return Values: 0=success | 1=failure | 2=discarded
+$opResult = 0;
 
+$prodId = '18468';
+$sale_price = 2500.35;
+$regular_price = 5000.45;
+$timestamp = 0;
+
+// Setting Meta Data - last_update_api
+$last_update = new stdClass();
+$last_update->key = 'last_update_api';
+$last_update->value = $timestamp;
+
+$metaData = array();
+$metaData[] = $last_update;
+
+$data = [
+		'regular_price' => preg_replace('/[^0-9-.]+/', '', strval($regular_price)),
+		'sale_price' => preg_replace('/[^0-9-.]+/', '', strval($sale_price)),
+		'meta_data' => $metaData
+];
+
+print_r($data);
+
+// WooCommerce Endpoint
+$endpoint = 'products/' . $prodId;
+
+// WOOCMMERCE - REST API!!!!
+//$woocommerce = new Client($this->_STORE_URL, $this->_CLIENTKEY, $this->_SECRETKEY, ['wp_api' => true, 'version' => 'wc/v2',  'query_string_auth' => true]);
+
+$woocommerce = new Client(
+		'https://www.yokohamapalermo.com.ar/',
+		'ck_dba953dc5bc6af8d7cea0824dd181bc3de660369',
+		'cs_9e42a93a406857ba843739cb8a86361cf188c41e',
+		['wp_api' => true, 'version' => 'wc/v2',  'query_string_auth' => true]);
+
+
+$response = $woocommerce->put($endpoint, $data);
+
+print_r($response);
+
+unset($woocommerce);
 
 
 

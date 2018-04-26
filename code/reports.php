@@ -128,16 +128,11 @@ class reports{
     		$stock			= $storeRow[8]['value'];
     		$timestamp	 	= $storeRow[9]['value'];
     		
-    		$this->_Logger->writeLogFile("[DEBUG] - Store ID: " . $id);
-    		$this->_Logger->writeLogFile("[DEBUG] - Store ID: " . $model);
-    		$this->_Logger->writeLogFile("[DEBUG] - Store TS: " . $timestamp);
-    		
     		$found = false;
     		
     		// Loop through Products From File to check if Product From Store is OK
-    		foreach($productsFromFile as $key => $fileRow) {
-    			print_r($fileRow[0]['value']);
-    			if ($id == $fileRow[0]['value']) {
+    		foreach($productsFromFile as $key2 => $fileRow) {
+    			if ($sku == $fileRow[4]['value']) {
     				// Product in Store PRESENT in File
     				$found = true;
     				break;

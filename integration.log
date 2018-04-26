@@ -1612,3 +1612,27 @@ WISE Solutions INTEGRATION APPLICATION Logging Started...
 [25-Apr-2018:20:49:20] [interface] [DEBUG] - [reports] generateNoListReport() - Productos que existen en TIENDA y alguna vez fueron actualizados: 1
 [25-Apr-2018:20:49:20] [interface] [DEBUG] - [reports] generateNoListReport() - Productos que existen en TIENDA y nunca fueron actualizados: 192
 [25-Apr-2018:20:49:20] [interface] [DEBUG] - [reports] generateNoListReport() - Fichero Creado C:\xampp\htdocs\gestiondeproductos\products\Productos-NoLista.csv
+[25-Apr-2018:21:18:03] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[25-Apr-2018:21:18:03] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductsNotInFileApi
+[25-Apr-2018:21:18:03] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 663 productos
+[25-Apr-2018:21:18:03] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[25-Apr-2018:21:18:03] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 
+[25-Apr-2018:21:18:04] [interface] [DEBUG] - [productData] getProductsFromDB() - Se han leido 193 productos de la Tienda Online
+[25-Apr-2018:21:18:04] [interface] [DEBUG] - [reports] generateNoListReport() - Productos en Tienda: 193
+[25-Apr-2018:21:18:04] [interface] [DEBUG] - [reports] generateNoListReport() - Productos en List: 663
+[25-Apr-2018:21:18:04] [interface] [DEBUG] - [reports] generateNoListReport() - Productos que existen en TIENDA y no figuran en LISTA (TOTAL): 193
+[25-Apr-2018:21:18:04] [interface] [DEBUG] - [reports] generateNoListReport() - Productos que existen en TIENDA y alguna vez fueron actualizados: 1
+[25-Apr-2018:21:18:04] [interface] [DEBUG] - [reports] generateNoListReport() - Productos que existen en TIENDA y nunca fueron actualizados: 192
+[25-Apr-2018:21:18:04] [interface] [DEBUG] - [reports] generateNoListReport() - Fichero Creado C:\xampp\htdocs\gestiondeproductos\products\Productos-NoLista.csv
+[25-Apr-2018:21:22:28] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[25-Apr-2018:21:22:28] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductsNotInFileApi
+[25-Apr-2018:21:22:29] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 663 productos
+[25-Apr-2018:21:22:29] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[25-Apr-2018:21:22:29] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 
+[25-Apr-2018:21:22:29] [interface] [DEBUG] - [productData] getProductsFromDB() - Se han leido 193 productos de la Tienda Online
+[25-Apr-2018:21:22:29] [interface] [DEBUG] - [reports] generateNoListReport() - Productos en Tienda: 193
+[25-Apr-2018:21:22:29] [interface] [DEBUG] - [reports] generateNoListReport() - Productos en List: 663
+[25-Apr-2018:21:22:29] [interface] [DEBUG] - [reports] generateNoListReport() - Productos que existen en TIENDA y no figuran en LISTA (TOTAL): 32
+[25-Apr-2018:21:22:29] [interface] [DEBUG] - [reports] generateNoListReport() - Productos que existen en TIENDA y alguna vez fueron actualizados: 0
+[25-Apr-2018:21:22:29] [interface] [DEBUG] - [reports] generateNoListReport() - Productos que existen en TIENDA y nunca fueron actualizados: 32
+[25-Apr-2018:21:22:29] [interface] [DEBUG] - [reports] generateNoListReport() - Fichero Creado C:\xampp\htdocs\gestiondeproductos\products\Productos-NoLista.csv

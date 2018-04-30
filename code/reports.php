@@ -10,7 +10,6 @@
  
 class reports{
 	private $fileName;
-	private $eol;
 	
     protected $_Logger;
      
@@ -42,11 +41,7 @@ class reports{
     
     // Lista de Productos que no figuran en la Tienda
     // Create NO STORE product file | PARAM Products Array(sku, model, title)
-    public function generateNoStoreReport($products) {
-    	$ini = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/gestiondeproductos/config/app.ini');
-    	$eol = $ini['log_endline'];
-    	$fileName = $ini['nostore_file'];
-    	
+    public function generateNoStoreReport($products, $fileName) {
     	$file = new File();
     	$file->setFile($fileName);
 		$file->openFileForReadWrite();
@@ -60,7 +55,7 @@ class reports{
 			$title = $p['title'];
 			
     		$message = $sku . "," . $model . "," . $title . ",";
-    		fwrite($filePointer, "$message" . $eol);    		
+    		fwrite($filePointer, "$message" . PHP_EOL);    		
     		$countTotal++;
 		}
 		
@@ -81,11 +76,7 @@ class reports{
     
     // Lista de Productos que no fueron actualizados porque no figuran en la lista de Productos
     // Create NO LIST product file | PARAM Products Array(sku, model, title)
-    public function generateNoFileReport($pFile, $pStore) {
-    	$ini = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/gestiondeproductos/config/app.ini');
-    	$eol = $ini['log_endline'];
-    	$fileName = $ini['nolist_file'];
-    	 
+    public function generateNoFileReport($pFile, $pStore, $fileName) {
     	$file = new File();
     	$file->setFile($fileName);
     	$file->openFileForReadWrite();
@@ -144,7 +135,7 @@ class reports{
     			if ($timestamp == "" OR $timestamp == 0 OR $timestamp == null) {
     				// Product NEVER updated | Probably bad SKU
     				$countTotalNeverUpdated++;
-    				$text = "Nunca Actualizado | Bad SKU";
+    				$text = "Nunca Actualizado | Codigo de Producto (SKU) No Existe";
     			} else {
     				// Product UPDATED at least once | Probably removed from catalogue
     				$countTotalUpdated++;
@@ -153,7 +144,7 @@ class reports{
     			
     			// Print Product to NoList file
     			$message = 	$id . "," . $model . "," . $title . "," . $status . "," . $sku . "," . $text;    			 
-    			fwrite($filePointer, "$message" . $eol);
+    			fwrite($filePointer, "$message" . PHP_EOL);
     		}
     	}
     	

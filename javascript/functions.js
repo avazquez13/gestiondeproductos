@@ -316,7 +316,8 @@ function processResponse(response) {
 								"<tr><td><p class='responseContentText'>Productos que NO existen en TIENDA y figuran en LISTA</p></td>" +
 									"<td><p class='responseContentValue'>" + responseContent.TotalList + "</p></td></tr>" +
 							"</table>" + 
-						"</div>";
+						"</div>" + 
+				"<p class='response'>" + responseContent.Email + "</p>";;
 			break;
 		case "getProductsNotInFileApi":
 			html = "<div id='responseMessage'>" +
@@ -337,7 +338,8 @@ function processResponse(response) {
 								"<tr><td><p class='responseContentText'>Productos que existen en TIENDA y nunca fueron actualizados</p></td>" +
 									"<td><p class='responseContentValue'>" + responseContent.TotalNeverUpdated + "</p></td></tr>" +
 							"</table>" + 
-						"</div>";
+						"</div>" + 
+				"<p class='response'>" + responseContent.Email + "</p>";
 			break;
 		case "":
 			// Apicall Undefined - Throw Error

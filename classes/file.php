@@ -11,7 +11,6 @@
 class File {
 	// LOGGING CONFIG - ini file
 	private $file;
-	private $eol;
 	
 	// FILE POINTER
 	private $fp;
@@ -19,8 +18,6 @@ class File {
 	protected $_Logger;
 	
 	public function __construct() {
-		$ini = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/gestiondeproductos/config/app.ini');
-		$this->eol 	= $ini['log_endline'];
 		$this->setFilePointer(null);
 		$this->_Logger = new Logger();
 	}
@@ -71,6 +68,4 @@ class File {
 		$this->setFile(null);
 	}
 }
-
-
 ?>

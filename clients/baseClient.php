@@ -36,6 +36,8 @@ abstract class BaseClient {
 	protected $_CLIENTKEY;
 	protected $_SECRETKEY;
 	protected $_STORE_URL;
+	protected $_NOSTORE_FILENAME;
+	protected $_NOFILE_FILENAME;
 	
 	// LOGGING OBJECT
 	protected $_Logger;
@@ -94,6 +96,9 @@ abstract class BaseClient {
 		$this->_CLIENTKEY 	= $ini['client_key'];
 		$this->_SECRETKEY 	= $ini['secret_key'];
 		$this->_STORE_URL 	= $ini['store_url'];
+		
+		$this->_NOSTORE_FILENAME = $ini['nostore_file'];
+		$this->_NOFILE_FILENAME = $ini['nolist_file'];
 	}
 	
 	public function getParams() {

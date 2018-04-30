@@ -43,6 +43,11 @@ require_once("Automattic\WooCommerce\HttpClient\Response.php");
 
 use Automattic\WooCommerce\Client;
 
+// PHPMailer LIBRARY
+require_once $_SERVER['DOCUMENT_ROOT'].'\gestiondeproductos\PHPMailer\src\PHPMailer.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'\gestiondeproductos\PHPMailer\src\SMTP.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'\gestiondeproductos\PHPMailer\src\Exception.php';
+
 require_once("clients/baseClient.php");
 
 require_once("classes/product.php");
@@ -55,6 +60,7 @@ require_once("classes/customexception.php");
 require_once("code/reports.php");
 require_once("code/productData.php");
 require_once("code/routines.php");
+require_once("code/sendEmail.php");
 
 require_once("log/Logger.php");
 
@@ -154,8 +160,19 @@ class WiseClient extends BaseClient{
 		$aNoStore = $pd->findProductsNotInStore($pl['products']);
 		
 		$reports = new reports();
-		$this->_RESPONSE = $reports->generateNoStoreReport($aNoStore);
+		$this->_RESPONSE = $reports->generateNoStoreReport($aNoStore, $this->_NOSTORE_FILENAME);
 		$this->_RESPONSE['Model'] = $this->getModel();
+		
+		$mail = new SendEmail();
+		$mail->setAttachment($this->_NOSTORE_FILENAME);
+		$mail->setSubject("GESTION DE PRODUCTOS | Productos que no han sido ingresados en la TIENDA");
+		
+		if ($mail->sendEmailNotification()) {
+			$this->_RESPONSE['Email'] = "El fichero de Productos relevados ha sido enviado por Email exitosamente";
+		} else {
+			$this->_RESPONSE['Email'] = "No se ha podido enviar el Email con el fichero de Productos";
+		}
+		
 		echo json_encode($this->_RESPONSE);
 		return;
 	}
@@ -168,8 +185,18 @@ class WiseClient extends BaseClient{
 		$prodcutsFromStore = $pdDB->getProductsFromStore($this->getModel());
 		
 		$reports = new reports();
-		$this->_RESPONSE = $reports->generateNoFileReport($prodcutsFromFile, $prodcutsFromStore);
+		$this->_RESPONSE = $reports->generateNoFileReport($prodcutsFromFile, $prodcutsFromStore, $this->_NOSTORE_FILENAME);
 		$this->_RESPONSE['Model'] = ($this->getModel() != null ? $this->getModel() : 'TODOS');
+		
+		$mail = new SendEmail();
+		$mail->setAttachment($this->_NOFILE_FILENAME);
+		$mail->setSubject("GESTION DE PRODUCTOS | Productos de la TIENDA que no existen en la LISTA de Precios");
+		
+		if ($mail->sendEmailNotification()) {
+			$this->_RESPONSE['Email'] = "El fichero de Productos relevados ha sido enviado por Email exitosamente";
+		} else {
+			$this->_RESPONSE['Email'] = "No se ha podido enviar el Email con el fichero de Productos";
+		}
 		
 		echo json_encode($this->_RESPONSE);
 	}

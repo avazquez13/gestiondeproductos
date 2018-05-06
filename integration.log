@@ -1,0 +1,45 @@
+WISE Solutions INTEGRATION APPLICATION Logging Started...
+[06-May-2018:13:48:22] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductDataApi
+[06-May-2018:13:48:22] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 733 productos
+[06-May-2018:13:48:22] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[06-May-2018:13:48:22] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 
+[06-May-2018:13:58:19] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[06-May-2018:13:58:19] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductDataApi
+[06-May-2018:13:58:19] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 733 productos
+[06-May-2018:13:58:19] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[06-May-2018:13:58:19] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 
+[06-May-2018:14:02:37] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[06-May-2018:14:02:37] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductDataApi
+[06-May-2018:14:02:37] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 733 productos
+[06-May-2018:14:02:37] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[06-May-2018:14:02:37] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 
+[06-May-2018:14:06:01] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[06-May-2018:14:06:01] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductDataApi
+[06-May-2018:14:06:01] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 733 productos
+[06-May-2018:14:06:01] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[06-May-2018:14:06:01] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 
+[06-May-2018:14:06:02] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[06-May-2018:14:06:02] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductDataApi
+[06-May-2018:14:06:02] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 733 productos
+[06-May-2018:14:06:02] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[06-May-2018:14:06:02] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 
+[06-May-2018:14:06:06] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[06-May-2018:14:06:06] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductDataApi
+[06-May-2018:14:06:06] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 733 productos
+[06-May-2018:14:06:06] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[06-May-2018:14:06:06] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 
+[06-May-2018:14:10:47] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[06-May-2018:14:10:47] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductDataApi
+[06-May-2018:14:10:47] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 733 productos
+[06-May-2018:14:10:47] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[06-May-2018:14:10:47] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 
+[06-May-2018:14:10:49] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[06-May-2018:14:10:49] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductDataApi
+[06-May-2018:14:10:49] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 733 productos
+[06-May-2018:14:10:49] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[06-May-2018:14:10:49] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 
+[06-May-2018:14:10:50] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[06-May-2018:14:10:50] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductDataApi
+[06-May-2018:14:10:50] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 733 productos
+[06-May-2018:14:10:50] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[06-May-2018:14:10:50] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 

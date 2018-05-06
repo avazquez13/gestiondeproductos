@@ -7,62 +7,39 @@
  * Wise Solutions S.A.
  */
 
-
-/*
 // WOOCOMMERCE REST API LIBRARY
-require_once("/home/yokohamapalermo/public_html/gestiondeproductos/Automattic/WooCommerce/Client.php");
-require_once("/home/yokohamapalermo/public_html/gestiondeproductos/Automattic/WooCommerce/HttpClient/BasicAuth.php");
-require_once("/home/yokohamapalermo/public_html/gestiondeproductos/Automattic/WooCommerce/HttpClient/HttpClient.php");
-require_once("/home/yokohamapalermo/public_html/gestiondeproductos/Automattic/WooCommerce/HttpClient/HttpClientException.php");
-require_once("/home/yokohamapalermo/public_html/gestiondeproductos/Automattic/WooCommerce/HttpClient/OAuth.php");
-require_once("/home/yokohamapalermo/public_html/gestiondeproductos/Automattic/WooCommerce/HttpClient/Options.php");
-require_once("/home/yokohamapalermo/public_html/gestiondeproductos/Automattic/WooCommerce/HttpClient/Request.php");
-require_once("/home/yokohamapalermo/public_html/gestiondeproductos/Automattic/WooCommerce/HttpClient/Response.php");
-
-use Automattic\WooCommerce\Client;
-
-require_once("/home/yokohamapalermo/public_html/gestiondeproductos/clients/baseClient.php");
-require_once("/home/yokohamapalermo/public_html/gestiondeproductos/classes/database.php");
-require_once("/home/yokohamapalermo/public_html/gestiondeproductos/classes/messages.php");
-require_once("/home/yokohamapalermo/public_html/gestiondeproductos/classes/customexception.php");
-require_once("/home/yokohamapalermo/public_html/gestiondeproductos/classes/product.php");
-require_once("/home/yokohamapalermo/public_html/gestiondeproductos/classes/productList.php");
-require_once("/home/yokohamapalermo/public_html/gestiondeproductos/classes/reports.php");
-require_once("/home/yokohamapalermo/public_html/gestiondeproductos/log/logger.php");
-*/
-
-// WOOCOMMERCE REST API LIBRARY
-require_once("Automattic\WooCommerce\Client.php");
-require_once("Automattic\WooCommerce\HttpClient\BasicAuth.php");
-require_once("Automattic\WooCommerce\HttpClient\HttpClient.php");
-require_once("Automattic\WooCommerce\HttpClient\HttpClientException.php");
-require_once("Automattic\WooCommerce\HttpClient\OAuth.php");
-require_once("Automattic\WooCommerce\HttpClient\Options.php");
-require_once("Automattic\WooCommerce\HttpClient\Request.php");
-require_once("Automattic\WooCommerce\HttpClient\Response.php");
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/Automattic/WooCommerce/Client.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/Automattic/WooCommerce/HttpClient/BasicAuth.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/Automattic/WooCommerce/HttpClient/HttpClient.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/Automattic/WooCommerce/HttpClient/HttpClientException.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/Automattic/WooCommerce/HttpClient/OAuth.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/Automattic/WooCommerce/HttpClient/Options.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/Automattic/WooCommerce/HttpClient/Request.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/Automattic/WooCommerce/HttpClient/Response.php';
 
 use Automattic\WooCommerce\Client;
 
 // PHPMailer LIBRARY
-require_once $_SERVER['DOCUMENT_ROOT'].'\gestiondeproductos\PHPMailer\src\PHPMailer.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'\gestiondeproductos\PHPMailer\src\SMTP.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'\gestiondeproductos\PHPMailer\src\Exception.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/PHPMailer/src/PHPMailer.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/PHPMailer/src/SMTP.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/PHPMailer/src/Exception.php';
 
-require_once("clients/baseClient.php");
+// APP CLASSES
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/clients/baseClient.php';
 
-require_once("classes/product.php");
-require_once("classes/productList.php");
-require_once("classes/database.php");
-require_once("classes/file.php");
-require_once("classes/messages.php");
-require_once("classes/customexception.php");
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/classes/product.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/classes/productList.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/classes/database.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/classes/file.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/classes/messages.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/classes/customexception.php';
 
-require_once("code/reports.php");
-require_once("code/productData.php");
-require_once("code/routines.php");
-require_once("code/sendEmail.php");
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/code/reports.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/code/productData.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/code/routines.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/code/sendEmail.php';
 
-require_once("log/Logger.php");
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/log/Logger.php';
 
 class WiseClient extends BaseClient{
 

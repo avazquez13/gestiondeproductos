@@ -39,7 +39,7 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/code/productData.php
 require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/code/routines.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/code/sendEmail.php';
 
-require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/log/Logger.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/gestiondeproductos/log/logger.php';
 
 class WiseClient extends BaseClient{
 

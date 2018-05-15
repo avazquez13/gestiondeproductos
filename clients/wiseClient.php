@@ -162,7 +162,7 @@ class WiseClient extends BaseClient{
 		$prodcutsFromStore = $pdDB->getProductsFromStore($this->getModel());
 		
 		$reports = new reports();
-		$this->_RESPONSE = $reports->generateNoFileReport($prodcutsFromFile, $prodcutsFromStore, $this->_NOSTORE_FILENAME);
+		$this->_RESPONSE = $reports->generateNoFileReport($prodcutsFromFile, $prodcutsFromStore, $this->_NOFILE_FILENAME);
 		$this->_RESPONSE['Model'] = ($this->getModel() != null ? $this->getModel() : 'TODOS');
 		
 		$mail = new SendEmail();
@@ -178,6 +178,14 @@ class WiseClient extends BaseClient{
 		echo json_encode($this->_RESPONSE);
 	}
 
+	protected function setProductsOffLineApiCall() {
+		$pd = new ProductData();
+		$pl = $pd->getProductsFromOffLineFile($this->getModel());
+		$this->_RESPONSE = $this->processOffLineList($pl['products']);
+		echo json_encode($this->_RESPONSE);
+		return;
+	}
+	
 	protected function process($pList) {
 		foreach($pList as $key => $product) {
 			$result = $this->processProduct($product);
@@ -271,13 +279,16 @@ class WiseClient extends BaseClient{
 					'stock_quantity' => $stock,
 					'meta_data' => $metaData
 			];
-
-			$data = $data . ['stock_quantity' => $stock];
 		} else {
 			// Do Not Update Stock
+			// Activar Producto si Stock=0
+			// Actualizar Stock=20 en caso de que el Producto estuviera en 0
+			$stock = 20;
+			
 			$data = [
 					'regular_price' => preg_replace('/[^0-9-.]+/', '', strval($regular_price)),
 					'sale_price' => preg_replace('/[^0-9-.]+/', '', strval($sale_price)),
+					'stock_quantity' => $stock,
 					'meta_data' => $metaData
 			];
 		}
@@ -319,6 +330,96 @@ class WiseClient extends BaseClient{
 		
 		return $opResult;
 	}	
+	
+	protected function processOffLineList($pList) {
+		foreach($pList as $key => $product) {
+			$result = $this->processOffLineProduct($product);
+				
+			switch ($result) {
+				case 0: // SUCCESS
+					$this->countSUCCESS += 1;
+					break;
+				case 1: // FAIL
+					$this->countFAIL += 1;
+						
+					if ($this->_Logger->isDebugOn()) {
+						$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] processOffLineList() - ERROR - Product Update Failed for Product SKU " . $product[4]['value']);
+					}
+						
+					break;
+				case 2: // DISCARD
+					$this->countDISCARD += 1;
+					break;
+			}
+	
+			$this->countTOTAL += 1;
+		}
+	
+		$response = array(
+				'Succeeded' => $this->countSUCCESS,
+				'Failed' => $this->countFAIL,
+				'Discarded' => $this->countDISCARD,
+				'Total' => $this->countTOTAL
+		);
+	
+		return $response;
+	}
+	
+	protected function processOffLineProduct($product) {
+		// Updates Stock Only
+		// Product Set OFF LINE Stock=0
+		$opResult = 0;
+	
+		// Read Product Data
+		$id	 = $product[0]['value'];
+		$sku = $product[4]['value'];
+		
+		// Check if Product SKY > 10000 (Not a Service or KIT)
+		If (intval($sku) < 10000) {
+			// Product SKU belongs to a Service or KIT
+			$opResult = WiseClient::_OP_DISCARDED;
+			return $opResult;
+		}
+		
+		$data = ['stock_quantity' => '0'];
+	
+		// WooCommerce Endpoint
+		$endpoint = 'products/' . $id;
+	
+		try {
+			// WOOCMMERCE - REST API!!!!
+			$woocommerce = new Client($this->_STORE_URL, $this->_CLIENTKEY, $this->_SECRETKEY, ['wp_api' => true, 'version' => 'wc/v2',  'query_string_auth' => true]);
+				
+			$response = $woocommerce->put($endpoint, $data);
+				
+			if ($response->id == $id) {
+				$opResult = WiseClient::_OP_SUCCEDED;
+			} else {
+				throw new CustomException(Messages::RESULT_ERROR);
+			}
+		} catch (Automattic\WooCommerce\HttpClient\HttpClientException $e) {
+			// Producto No Actualizado - FAILURE
+			if ($this->_Logger->isDebugOn()) {
+				$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] processOffLineProduct() - ERROR - WooCommerce REST API: " . $e);
+			}
+			$opResult = WiseClient::_OP_FAILED;
+		} catch (Exception $ex) {
+			// Producto No Actualizado - FAILURE
+			if ($this->_Logger->isDebugOn()) {
+				$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] processOffLineProduct() - EXCEPTION: " . $ex);
+			}
+			$opResult = WiseClient::_OP_FAILED;
+		} catch (CustomException $ce) {
+			if ($this->_Logger->isDebugOn()) {
+				$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] processOffLineProduct() - ERROR - El producto no se ha actualizado: " . $ce->getMessage());
+			}
+			$opResult = WiseClient::_OP_FAILED;
+		} finally {
+			unset($woocommerce);
+		}
+	
+		return $opResult;
+	}
 	
 	protected function printCounters() {
 		if ($this->_Logger->isDebugOn()) {

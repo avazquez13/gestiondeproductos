@@ -21,6 +21,7 @@ abstract class BaseClient {
 	const UPDATE_PRODUCTS_API			= "updateProductsApi";
 	const GET_PRODUCTS_NOT_STORE_API 	= "getProductsNotInStoreApi"; // Products that are in the LIST but do not exist in the STORE
 	const GET_PRODUCTS_NOT_FILE_API 	= "getProductsNotInFileApi";  // Products that are in the STORE but do not exist in the LIST
+	const SET_PRODUCTS_OFF_LINE_API 	= "setProductsOffLineApi";  // Products that are in the STORE but do not exist in the LIST must be put OFF LINE (Stock=0)
 	
 	// Operation STATUS
 	const _OP_SUCCEDED 	= 0;
@@ -174,6 +175,7 @@ abstract class BaseClient {
 	abstract protected function getProductDataApiCall();
 	abstract protected function getProductsNotInStoreApiCall();
 	abstract protected function getProductsNotInFileApiCall();
+	abstract protected function setProductsOffLineApiCall();
 	
 	public function exec() {
 		$api = $this->getApiCall();
@@ -198,6 +200,10 @@ abstract class BaseClient {
 			case self::GET_PRODUCTS_NOT_FILE_API:
 				$this->setApiCall(self::GET_PRODUCTS_NOT_FILE_API);
 				$this->getProductsNotInFileApiCall();
+				break;
+			case self::SET_PRODUCTS_OFF_LINE_API:
+				$this->setApiCall(self::SET_PRODUCTS_OFF_LINE_API);
+				$this->setProductsOffLineApiCall();
 				break;
 			case "":
 				http_response_code(400);

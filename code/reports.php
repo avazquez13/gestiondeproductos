@@ -143,7 +143,18 @@ class reports{
     			}
     			
     			// Print Product to NoList file
-    			$message = 	$id . "," . $model . "," . $title . "," . $status . "," . $sku . "," . $text;    			 
+    			$message = 	$id . "," . 
+    						$model . "," . 
+    						$title . "," . 
+    						$status . "," . 
+    						$sku . "," . 
+    						$listPrice . "," . 
+    						$regularPrice . "," . 
+    						$salePrice . "," . 
+    						$stock . "," . 
+    						$timestamp . "," . 
+    						$text;
+    			
     			fwrite($filePointer, "$message" . PHP_EOL);
     		}
     	}

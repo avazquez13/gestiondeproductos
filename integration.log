@@ -48,3 +48,126 @@ WISE Solutions INTEGRATION APPLICATION Logging Started...
 [06-May-2018:14:17:27] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 733 productos
 [06-May-2018:14:17:27] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
 [06-May-2018:14:17:27] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 
+[15-May-2018:18:38:29] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[15-May-2018:18:38:29] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductDataApi
+[15-May-2018:18:38:29] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 733 productos
+[15-May-2018:18:38:29] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[15-May-2018:18:38:29] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 
+[15-May-2018:18:40:21] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[15-May-2018:18:40:21] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductDataApi
+[15-May-2018:18:40:21] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 733 productos
+[15-May-2018:18:40:21] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[15-May-2018:18:40:21] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 
+[15-May-2018:18:42:36] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[15-May-2018:18:42:36] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductDataApi
+[15-May-2018:18:42:36] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 733 productos
+[15-May-2018:18:42:36] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[15-May-2018:18:42:36] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 
+[15-May-2018:18:44:42] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[15-May-2018:18:44:42] [interface] [DEBUG] - [baseClient] exec() - APICALL: setProductsOffLineApi
+[15-May-2018:18:44:42] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Se han leido 2 productos
+[15-May-2018:18:44:42] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\Productos-NoLista.csv
+[15-May-2018:18:44:45] [interface] [DEBUG] - [wiseClient] processOffLineProduct() - ERROR - WooCommerce REST API: Automattic\WooCommerce\HttpClient\HttpClientException: Error: No se encontró la ruta que coincida con la URL y el método de la petición [rest_no_route] in C:\xampp\htdocs\gestiondeproductos\Automattic\WooCommerce\HttpClient\HttpClient.php:348
+Stack trace:
+#0 C:\xampp\htdocs\gestiondeproductos\Automattic\WooCommerce\HttpClient\HttpClient.php(378): Automattic\WooCommerce\HttpClient\HttpClient->lookForErrors(Object(stdClass))
+#1 C:\xampp\htdocs\gestiondeproductos\Automattic\WooCommerce\HttpClient\HttpClient.php(414): Automattic\WooCommerce\HttpClient\HttpClient->processResponse()
+#2 C:\xampp\htdocs\gestiondeproductos\Automattic\WooCommerce\Client.php(69): Automattic\WooCommerce\HttpClient\HttpClient->request('products/', 'PUT', Array)
+#3 C:\xampp\htdocs\gestiondeproductos\clients\wiseClient.php(395): Automattic\WooCommerce\Client->put('products/', Array)
+#4 C:\xampp\htdocs\gestiondeproductos\clients\wiseClient.php(336): WiseClient->processOffLineProduct(Array)
+#5 C:\xampp\htdocs\gestiondeproductos\clients\wiseClient.php(184): WiseClient->processOffLineList(Array)
+#6 C:\xampp\htdocs\gestiondeproductos\clients\baseClient.php(206): WiseClient->setProductsOffLineApiCall()
+#7 C:\xampp\htdocs\gestiondeproductos\interface.php(33): BaseClient->exec()
+#8 {main}
+[15-May-2018:18:44:45] [interface] [DEBUG] - [wiseClient] processOffLineList() - ERROR - Product Update Failed for Product SKU 207369
+[15-May-2018:18:44:45] [interface] [DEBUG] - [wiseClient] printCounters() - Se han procesado 2 productos
+[15-May-2018:18:44:45] [interface] [DEBUG] - [wiseClient] printCounters() - Productos Procesados: 
+[15-May-2018:18:44:45] [interface] [DEBUG] - [wiseClient] printCounters() - Margen Aplicado: %
+[15-May-2018:18:44:45] [interface] [DEBUG] - [wiseClient] printCounters() - Descuento Online Aplicado: %
+[15-May-2018:18:44:45] [interface] [DEBUG] - [wiseClient] printCounters() - Se han modificado con exito 0 productos
+[15-May-2018:18:44:45] [interface] [DEBUG] - [wiseClient] printCounters() - 1 productos han fallado al intentar actualizar
+[15-May-2018:18:44:45] [interface] [DEBUG] - [wiseClient] printCounters() - 1 productos no existen en la tienda online
+[15-May-2018:18:58:44] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[15-May-2018:18:58:44] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductDataApi
+[15-May-2018:18:58:44] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 733 productos
+[15-May-2018:18:58:44] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[15-May-2018:18:58:44] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 
+[15-May-2018:18:58:46] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[15-May-2018:18:58:46] [interface] [DEBUG] - [baseClient] exec() - APICALL: setProductsOffLineApi
+[15-May-2018:18:58:46] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Se han leido 2 productos
+[15-May-2018:18:58:46] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\Productos-NoLista.csv
+[15-May-2018:18:58:46] [interface] [DEBUG] - [wiseClient] processOffLineProduct() - id: 
+[15-May-2018:18:58:46] [interface] [DEBUG] - [wiseClient] processOffLineProduct() - sku: 1003
+[15-May-2018:18:58:46] [interface] [DEBUG] - [wiseClient] processOffLineProduct() - id: 
+[15-May-2018:18:58:46] [interface] [DEBUG] - [wiseClient] processOffLineProduct() - sku: 207369
+[15-May-2018:18:58:48] [interface] [DEBUG] - [wiseClient] processOffLineProduct() - ERROR - WooCommerce REST API: Automattic\WooCommerce\HttpClient\HttpClientException: Error: No se encontró la ruta que coincida con la URL y el método de la petición [rest_no_route] in C:\xampp\htdocs\gestiondeproductos\Automattic\WooCommerce\HttpClient\HttpClient.php:348
+Stack trace:
+#0 C:\xampp\htdocs\gestiondeproductos\Automattic\WooCommerce\HttpClient\HttpClient.php(378): Automattic\WooCommerce\HttpClient\HttpClient->lookForErrors(Object(stdClass))
+#1 C:\xampp\htdocs\gestiondeproductos\Automattic\WooCommerce\HttpClient\HttpClient.php(414): Automattic\WooCommerce\HttpClient\HttpClient->processResponse()
+#2 C:\xampp\htdocs\gestiondeproductos\Automattic\WooCommerce\Client.php(69): Automattic\WooCommerce\HttpClient\HttpClient->request('products/', 'PUT', Array)
+#3 C:\xampp\htdocs\gestiondeproductos\clients\wiseClient.php(396): Automattic\WooCommerce\Client->put('products/', Array)
+#4 C:\xampp\htdocs\gestiondeproductos\clients\wiseClient.php(336): WiseClient->processOffLineProduct(Array)
+#5 C:\xampp\htdocs\gestiondeproductos\clients\wiseClient.php(184): WiseClient->processOffLineList(Array)
+#6 C:\xampp\htdocs\gestiondeproductos\clients\baseClient.php(206): WiseClient->setProductsOffLineApiCall()
+#7 C:\xampp\htdocs\gestiondeproductos\interface.php(33): BaseClient->exec()
+#8 {main}
+[15-May-2018:18:58:48] [interface] [DEBUG] - [wiseClient] processOffLineList() - ERROR - Product Update Failed for Product SKU 207369
+[15-May-2018:19:02:55] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[15-May-2018:19:02:55] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductDataApi
+[15-May-2018:19:02:55] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 733 productos
+[15-May-2018:19:02:55] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[15-May-2018:19:02:55] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 
+[15-May-2018:19:02:57] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[15-May-2018:19:02:57] [interface] [DEBUG] - [baseClient] exec() - APICALL: setProductsOffLineApi
+[15-May-2018:19:02:57] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Se han leido 2 productos
+[15-May-2018:19:02:57] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\Productos-NoLista.csv
+[15-May-2018:19:03:00] [interface] [ERROR] - [CUSTOM EXCEPTION] logException -  CustomException: [3]: API Call returned ERROR message
+
+[15-May-2018:19:03:00] [interface] [DEBUG] - [wiseClient] processOffLineProduct() - EXCEPTION: CustomException: [3]: API Call returned ERROR message
+
+[15-May-2018:19:03:00] [interface] [DEBUG] - [wiseClient] processOffLineList() - ERROR - Product Update Failed for Product SKU 207369
+[15-May-2018:19:12:11] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[15-May-2018:19:12:11] [interface] [DEBUG] - [baseClient] exec() - APICALL: setProductsOffLineApi
+[15-May-2018:19:12:11] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Se han leido 2 productos
+[15-May-2018:19:12:11] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\Productos-NoLista.csv
+[15-May-2018:19:13:53] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[15-May-2018:19:13:53] [interface] [DEBUG] - [baseClient] exec() - APICALL: setProductsOffLineApi
+[15-May-2018:19:13:53] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Se han leido 2 productos
+[15-May-2018:19:13:53] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\Productos-NoLista.csv
+[15-May-2018:19:19:45] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[15-May-2018:19:19:45] [interface] [DEBUG] - [baseClient] exec() - APICALL: setProductsOffLineApi
+[15-May-2018:19:19:45] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Se han leido 0 productos
+[15-May-2018:19:19:45] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\Productos-NoLista.csv
+[15-May-2018:19:20:42] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[15-May-2018:19:20:42] [interface] [DEBUG] - [baseClient] exec() - APICALL: setProductsOffLineApi
+[15-May-2018:19:20:42] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Se han leido 0 productos
+[15-May-2018:19:20:42] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\Productos-NoLista.csv
+[15-May-2018:19:20:43] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[15-May-2018:19:20:43] [interface] [DEBUG] - [baseClient] exec() - APICALL: setProductsOffLineApi
+[15-May-2018:19:20:43] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Se han leido 0 productos
+[15-May-2018:19:20:43] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\Productos-NoLista.csv
+[15-May-2018:19:38:04] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[15-May-2018:19:38:04] [interface] [DEBUG] - [baseClient] exec() - APICALL: setProductsOffLineApi
+[15-May-2018:19:38:04] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Se han leido 0 productos
+[15-May-2018:19:38:04] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\Productos-NoLista.csv
+[15-May-2018:19:38:05] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[15-May-2018:19:38:05] [interface] [DEBUG] - [baseClient] exec() - APICALL: setProductsOffLineApi
+[15-May-2018:19:38:05] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Se han leido 0 productos
+[15-May-2018:19:38:05] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\Productos-NoLista.csv
+[15-May-2018:19:38:09] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[15-May-2018:19:38:09] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductDataApi
+[15-May-2018:19:38:09] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 733 productos
+[15-May-2018:19:38:09] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[15-May-2018:19:38:09] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 
+[15-May-2018:19:38:11] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[15-May-2018:19:38:11] [interface] [DEBUG] - [baseClient] exec() - APICALL: setProductsOffLineApi
+[15-May-2018:19:38:11] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Se han leido 0 productos
+[15-May-2018:19:38:11] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\Productos-NoLista.csv
+[15-May-2018:19:46:57] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[15-May-2018:19:46:57] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductDataApi
+[15-May-2018:19:46:57] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 733 productos
+[15-May-2018:19:46:57] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[15-May-2018:19:46:57] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 
+[15-May-2018:19:47:08] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[15-May-2018:19:47:08] [interface] [DEBUG] - [baseClient] exec() - APICALL: setProductsOffLineApi
+[15-May-2018:19:47:08] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Se han leido 2 productos
+[15-May-2018:19:47:08] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\Productos-NoLista.csv

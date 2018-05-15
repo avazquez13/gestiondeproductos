@@ -254,6 +254,9 @@ enableStuff = function() {
 		case "getProductsNotInFileApi":
 			document.getElementById("submit_it").value = "IDENTIFICAR PRODUCTOS QUE NO EXISTEN EN LA LISTA";
 			break;
+		case "setProductsOffLineApi":
+			document.getElementById("submit_it").value = "ACTUALIZAR PRODUCTOS FUERA DE CATALOGO";
+			break;
 	}
 }
 
@@ -340,6 +343,23 @@ function processResponse(response) {
 							"</table>" + 
 						"</div>" + 
 				"<p class='response'>" + responseContent.Email + "</p>";
+			break;
+		case "setProductsOffLineApi":
+			html = "<div id='responseMessage'>" +
+				"<p class='response'>La Lista de Productos OFF LINE fue procesada con exito!</p>" +
+					"</div>" + 
+						"<div id='tableContainer'>" +
+							"<table class='tableContent'>" +
+								"<tr><td><p class='responseContentText'>Productos Procesados</p></td>" + 
+									"<td><p class='responseContentValue'>" + responseContent.Total + "</p></td></tr>" +
+								"<tr><td><p class='responseContentText'>Productos Actualizados</p></td>" +
+									"<td><p class='responseContentValue'>" + responseContent.Succeeded + "</p></td></tr>" +
+								"<tr><td><p class='responseContentText'>Actualizaciones Fallidas</p></td>" +
+									"<td><p class='responseContentValue'>" + responseContent.Failed + "</p></td></tr>" +
+								"<tr><td><p class='responseContentText'>Productos que no se Actualizaron (SKU < 10000)</p></td>" +
+									"<td><p class='responseContentValue'>" + responseContent.Discarded + "</p></td></tr>" +
+							"</table>" + 
+						"</div>";
 			break;
 		case "":
 			// Apicall Undefined - Throw Error

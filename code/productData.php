@@ -89,6 +89,84 @@ class ProductData {
 		return $retVal;
 	}
 	
+	// Get Products from File provided based on Search Criteria (Model)
+	public function getProductsFromOffLineFile() {
+		$ini = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/gestiondeproductos/config/app.ini');
+		$fileName = $ini['nolist_file'];
+		
+		$file = new File();
+		$file->setFile($fileName);
+		$file->openFileForRead();
+		$filePointer = $file->getFilePointer();
+	
+		$productList = new productList();
+	
+		$count = 0;
+	
+		while (($data = fgetcsv($filePointer, 1000, ",")) !== FALSE) {
+			// Column 0 - Product ID
+			$id = $data[0];
+			
+			// Column 1 - Product Model
+			$model = $data[1];
+			
+			// Column 2 - Product Title
+			$title = $data[2];
+			
+			// Column 3 - Product Status
+			$status = $data[3];
+			
+			// Column 4 - Product SKU
+			$sku = $data[4];
+			
+			// Column 5 - Product List Price
+			$listPrice = $data[5];
+			
+			// Column 6 - Product Regular Price
+			$regularPrice = $data[6];
+			
+			// Column 7 - Product Sale Price
+			$salePrice = $data[7];
+			
+			// Column 8 - Product Stock
+			$stock = $data[8];
+			
+			// Column 9 - Product Last Update Timestamp					
+			$timestamp = $data[9];
+						
+			$p = new Product();
+	
+			$p->setProduct(
+					$id,
+					$model,
+					$title,
+					$status,
+					$sku,
+					$listPrice,
+					$regularPrice,
+					$salePrice,
+					$stock,
+					$timestamp);
+	
+			$productList->addProduct($p->getProduct());
+			$count += 1;
+		}
+	
+		$file->closeFile();
+	
+		if ($this->_Logger->isDebugOn()) {
+			$this->_Logger->writeLogFile("[DEBUG] - [productData] getProductsFromOffLineFile() - Se han leido " . $count . " productos" );
+			$this->_Logger->writeLogFile("[DEBUG] - [productData] getProductsFromOffLineFile() - Fichero: " . $file->getFile());
+		}
+		
+		$retVal = array (
+				'products' => $productList->getProductList(),
+				'count' => $productList->getNumObjects()
+		);
+	
+		return $retVal;
+	}
+	
 	// Get Products from Database based on Search Criteria (Model)
 	public function getProductsFromStore($searchCriteria) {
 		$productList = new productList();

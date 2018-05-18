@@ -274,10 +274,11 @@ class WiseClient extends BaseClient{
 		if ($this->getUpdateStock() > 0) {
 			// Update Stock
 			$data = [
-					'regular_price' => preg_replace('/[^0-9-.]+/', '', strval($regular_price)),
-					'sale_price' => preg_replace('/[^0-9-.]+/', '', strval($sale_price)),
-					'stock_quantity' => $stock,
-					'meta_data' => $metaData
+					'regular_price' 	=> preg_replace('/[^0-9-.]+/', '', strval($regular_price)),
+					'sale_price' 		=> preg_replace('/[^0-9-.]+/', '', strval($sale_price)),
+					'stock_quantity' 	=> $stock,
+					'in_stock'			=> true,
+					'meta_data' 		=> $metaData
 			];
 		} else {
 			// Do Not Update Stock
@@ -286,14 +287,15 @@ class WiseClient extends BaseClient{
 			$stock = 20;
 			
 			$data = [
-					'regular_price' => preg_replace('/[^0-9-.]+/', '', strval($regular_price)),
-					'sale_price' => preg_replace('/[^0-9-.]+/', '', strval($sale_price)),
-					'stock_quantity' => $stock,
-					'meta_data' => $metaData
+					'regular_price' 	=> preg_replace('/[^0-9-.]+/', '', strval($regular_price)),
+					'sale_price' 		=> preg_replace('/[^0-9-.]+/', '', strval($sale_price)),
+					'stock_quantity' 	=> $stock,
+					'in_stock'         	=> true,
+					'meta_data' 		=> $metaData
 			];
 		}
 		
-				// WooCommerce Endpoint
+		// WooCommerce Endpoint
 		$endpoint = 'products/' . $prodId;
 
 		try {
@@ -381,7 +383,10 @@ class WiseClient extends BaseClient{
 			return $opResult;
 		}
 		
-		$data = ['stock_quantity' => '0'];
+		$data = [
+				'stock_quantity' 	=> 0,
+				'in_stock'         	=> false
+		];
 	
 		// WooCommerce Endpoint
 		$endpoint = 'products/' . $id;

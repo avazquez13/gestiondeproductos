@@ -241,10 +241,11 @@ class WiseClient extends BaseClient{
 		$timestamp	 	= $product[9]['value'];
 		
 		// Check if Stock = 0
-		If ($stock != null) {
+		If (is_numeric($stock)) {
 			If ($stock > 0) {
 				$inStock = true;
 			} else {
+				$stock = 0;
 				$inStock = false;
 			}
 		} else {
@@ -284,7 +285,7 @@ class WiseClient extends BaseClient{
 		$metaData[] = $last_update;
 
 		// API Params
-		if ($this->getUpdateStock() == 0) {
+		if ($this->getUpdateStock() > -1) {
 			// Update Stock
 			$data = [
 				'regular_price' 	=> preg_replace('/[^0-9-.]+/', '', strval($regular_price)),

@@ -52,9 +52,13 @@ class ProductData {
 			$sku = $data[5];
 			// Column 6 - Product List Price
 			$listPrice = preg_replace('/[^0-9-.]+/', '', $data[6]);
-			// Column 7 - Product Online Price (SALE)
-			// Column 8 - STOCK - ToDo: Agregar Stock a Lista de Productos
-				
+			// Column 7  - Product Online Price (SALE)
+			// Column 8  - H30 Not in use
+			// Column 9  - H45 Not in use
+			// Column 10 - H60 Not in use
+			// Column 11 - STOCK - Valor 0=PAUSADO | vacio o > 0 =ACTIVO
+			$stock = $data[11];
+			
 			$p = new Product();
 	
 			$p->setProduct(
@@ -66,7 +70,7 @@ class ProductData {
 					$listPrice,
 					null,
 					null,
-					null,
+					$stock,
 					null);
 	
 			$productList->addProduct($p->getProduct());

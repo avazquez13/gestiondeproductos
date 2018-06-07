@@ -237,8 +237,20 @@ class WiseClient extends BaseClient{
 		$list_price		= $product[5]['value'];
 		$regular_price 	= $product[6]['value'];
 		$sale_price 	= $product[7]['value'];
-		$stock			= $product[8]['value'];
+		$stock			= intval($product[8]['value']);
 		$timestamp	 	= $product[9]['value'];
+		
+		// Check if Stock = 0
+		If ($stock != null) {
+			If ($stock > 0) {
+				$inStock = true;
+			} else {
+				$inStock = false;
+			}
+		} else {
+			$stock = 20;
+			$inStock = true;
+		}
 		
 		// Check if Product exists in Store
 		If ($id == null) {
@@ -271,26 +283,22 @@ class WiseClient extends BaseClient{
 		$metaData = array();
 		$metaData[] = $last_update;
 
+		// API Params
 		if ($this->getUpdateStock() > 0) {
 			// Update Stock
 			$data = [
-					'regular_price' 	=> preg_replace('/[^0-9-.]+/', '', strval($regular_price)),
-					'sale_price' 		=> preg_replace('/[^0-9-.]+/', '', strval($sale_price)),
-					'stock_quantity' 	=> $stock,
-					'in_stock'			=> true,
-					'meta_data' 		=> $metaData
+				'regular_price' 	=> preg_replace('/[^0-9-.]+/', '', strval($regular_price)),
+				'sale_price' 		=> preg_replace('/[^0-9-.]+/', '', strval($sale_price)),
+				'stock_quantity' 	=> $stock,
+				'in_stock'         	=> $inStock,
+				'meta_data' 		=> $metaData
 			];
+			
 		} else {
 			// Do Not Update Stock
-			// Activar Producto si Stock=0
-			// Actualizar Stock=20 en caso de que el Producto estuviera en 0
-			$stock = 20;
-			
 			$data = [
 					'regular_price' 	=> preg_replace('/[^0-9-.]+/', '', strval($regular_price)),
 					'sale_price' 		=> preg_replace('/[^0-9-.]+/', '', strval($sale_price)),
-					'stock_quantity' 	=> $stock,
-					'in_stock'         	=> true,
 					'meta_data' 		=> $metaData
 			];
 		}

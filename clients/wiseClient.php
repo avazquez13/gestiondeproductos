@@ -284,7 +284,7 @@ class WiseClient extends BaseClient{
 		$metaData[] = $last_update;
 
 		// API Params
-		if ($this->getUpdateStock() > 0) {
+		if ($this->getUpdateStock() == 0) {
 			// Update Stock
 			$data = [
 				'regular_price' 	=> preg_replace('/[^0-9-.]+/', '', strval($regular_price)),

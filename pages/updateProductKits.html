@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+	<title>WISE Solutions - Gestión de Productos</title>
+	<link rel="stylesheet" href="../css/styles.css">
+	<script type="text/javascript" src="../javascript/jquery-1.12.2.min.js"></script>
+	<script type="text/javascript" src="../javascript/functions.js"></script> 
+	<script type="text/javascript" src="../javascript/queries.js"></script>
+	
+	<script type="text/javascript">
+    	function process() {
+    		productModelDataHandler();
+		}
+    	
+		if (window.addEventListener)
+			window.addEventListener("load", process, false);
+		else if (window.attachEvent)
+			window.attachEvent("onload", process);
+		else window.onload = process;
+	</script>
+	
+</head>
+<body>
+    <div class="main">
+    	<div class="columns column-1">
+    	</div>
+    	
+    	<div class="columns column-2">
+    		<div class="content">
+    			<img src="../images/wise-logo.png" width="150" height="auto">
+    			<h2>WISE Solutions - Gestión de Productos</h2>
+    			<a id="menuLink" href="../index.html">Volver a Inicio</a>
+    		</div>
+    		<div id="formContainer">
+    			<form method="post"  enctype="multipart/form-data" name="updateProductKitsForm" id="updateProductsForm" >
+    				<div style="display: none;">
+    					<input type="hidden" value="updateProductKitsApi" id="apicall" name="apicall">
+    					<input type="hidden" value="" id="margin" name="margin">
+    					<input type="hidden" value="" id="discount" name="discount">
+    					<input type="hidden" value="" id="updateStock" name="updateStock">
+    				</div>
+    				
+    				<p><span><label for="model">Modelo</label></span>
+	    				<select id="model"></select> 
+					</p>
+    				
+    				<p><input type="button" class="btn" value="ACTUALIZAR KITS DE PRODUCTOS" id="submit_it" name="submit" onclick="sendData();"></p>
+    			</form>
+    		</div>
+    		<div id="responseContainer">
+    		</div>
+      	</div>
+
+    	<div class="columns column-3">
+    	</div>
+	</div>   
+</body>
+<footer id="footer">
+  <p>© Copyright 2018 - <script>document.write(new Date().getFullYear());</script> | WISE Solutions S.A. | Todos los Derechos Reservados | Powered by <a href='http://www.wisesolutions.com.ar' target='_blank'>WISE Solutions</a></p>
+  <p>Contacto: <a href="mailto:info@wisesolutions.com.ar">info@wisesolutions.com.ar</a></p>
+</footer> 
+</html>

@@ -8,7 +8,7 @@
  * Wise Solutions S.A.
  */
  
-class reports{
+class reports {
 	private $fileName;
 	
     protected $_Logger;
@@ -118,6 +118,7 @@ class reports{
     		$salePrice 		= $storeRow[7]['value'];
     		$stock			= $storeRow[8]['value'];
     		$timestamp	 	= $storeRow[9]['value'];
+    		$parent_sku	 	= $storeRow[10]['value'];
     		
     		$found = false;
     		
@@ -153,6 +154,7 @@ class reports{
     						$salePrice . "," . 
     						$stock . "," . 
     						$timestamp . "," . 
+    						$parent_sku . "," .
     						$text;
     			
     			fwrite($filePointer, "$message" . PHP_EOL);

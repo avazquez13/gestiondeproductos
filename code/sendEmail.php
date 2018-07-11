@@ -154,18 +154,21 @@ class SendEmail {
 			$mail->Body    = file_get_contents($this->getHtmlURL(), true);
 			// $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 			
-			if(!$mail->Send()) {
-				throw Exception;
-			} else {
-				$response = true;
+			$mail->Send();
+			$response = true;
+			$this->_Logger->writeLogFile("[DEBUG] - [sendEmail] sendEmailNotification() - Email Notification Sent OK");
+		} catch (phpmailerException $mailEx) {
+			if ($this->_Logger->isDebugOn()) {
+				$this->_Logger->writeLogFile("[DEBUG] - [sendEmail] sendEmailNotification() - PHPMailer Error: " . $mailEx->errorMessage());
 			}
+			$response = false;
 		} catch (Exception $e) {
 			if ($this->_Logger->isDebugOn()) {
-				$this->_Logger->writeLogFile("[DEBUG] - [sendEmail] sendEmailNotification() - Mailer Error: " . $mail->ErrorInfo);
+				$this->_Logger->writeLogFile("[DEBUG] - [sendEmail] sendEmailNotification() - Mail Exception Error: " . $e->getMessage());
 			}
-			
 			$response = false;
-		}
+		} 
+			
 		return $response;
 	}
 }

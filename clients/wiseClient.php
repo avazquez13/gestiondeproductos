@@ -130,6 +130,14 @@ class WiseClient extends BaseClient{
 		echo json_encode($this->_RESPONSE);
 		return;
 	}
+	
+	protected function updateProductKitsApiCall() {
+		$pd = new ProductData();
+		$pl = $pd->getProductsFromStore($this->getModel());
+		$this->_RESPONSE = $this->processKitList($pl['products']);
+		echo json_encode($this->_RESPONSE);
+		return;
+	}
 
 	protected function getProductsNotInStoreApiCall() {
 		$pd = new ProductData();
@@ -239,6 +247,7 @@ class WiseClient extends BaseClient{
 		$sale_price 	= $product[7]['value'];
 		$stock			= intval($product[8]['value']);
 		$timestamp	 	= $product[9]['value'];
+		$parent_sku		= $product[10]['value'];
 		
 		// Check if Stock = 0
 		If (is_numeric($stock)) {
@@ -342,6 +351,167 @@ class WiseClient extends BaseClient{
 		return $opResult;
 	}	
 	
+	protected function processKitList($pList) {
+		foreach($pList as $key => $product) {
+			$sku = $product[4]['value'];
+				
+			if ($sku < 10000 OR $sku > 99999) {
+				// Not a KIT
+				continue;
+			}
+				
+			// Find Parent Product
+			$parent_sku = $product[10]['value'];
+				
+			$parent_prod = $this->getParentProduct($parent_sku, $pList);
+				
+			$regular_price 	= $parent_prod[0];
+			$sale_price 	= $parent_prod[1];
+			$stock			= $parent_prod[2];
+				
+			$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] processKitList() - $sale_price " . $sale_price);
+				
+			//$result = $this->processProductKit($product);
+			$result = Messages::OP_SUCCESS;
+	
+			switch ($result) {
+				case 0: // SUCCESS
+					$this->countSUCCESS += 1;
+					break;
+				case 1: // FAIL
+					$this->countFAIL += 1;
+	
+					if ($this->_Logger->isDebugOn()) {
+						$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] processKitList() - ERROR - Product Update Failed for Product SKU " . $product[4]['value']);
+					}
+	
+					break;
+				case 2: // DISCARD
+					$this->countDISCARD += 1;
+					break;
+			}
+	
+			$this->countTOTAL += 1;
+		}
+	
+		$this->printCounters();
+	
+		$response = array(
+				'Model' => $this->getModel(),
+				'Succeeded' => $this->countSUCCESS,
+				'Failed' => $this->countFAIL,
+				'Total' => $this->countTOTAL
+		);
+	
+		return $response;
+	}
+	
+	protected function processProductKit($product) {
+		// Updates KIT [sale_price, regular_price, stock_quantity, last_update_api]
+		// Return Values: 0=success | 1=failure | 2=discarded
+		$opResult = 0;
+	
+		// Read Product Data
+		$id				= $product[0]['value'];
+		$model			= $product[1]['value'];
+		$title			= $product[2]['value'];
+		$status			= $product[3]['value'];
+		$sku			= $product[4]['value'];
+		$list_price		= $product[5]['value'];
+		$regular_price 	= $product[6]['value'];
+		$sale_price 	= $product[7]['value'];
+		$stock			= intval($product[8]['value']);
+		$timestamp	 	= $product[9]['value'];
+		$parent_sku		= $product[10]['value'];
+	
+		// Check if Stock = 0
+		If (is_numeric($stock)) {
+			If ($stock > 0) {
+				$inStock = true;
+			} else {
+				$stock = 0;
+				$inStock = false;
+			}
+		} else {
+			$stock = 20;
+			$inStock = true;
+		}
+	
+		// Sale Price = *2
+		$kit_sale_price = routines::calculateSalePrice($list_price, $this->getMargin());
+			
+		// Regular Price = *2
+		$kit_regular_price = routines::calculateRegularPrice($sale_price, $this->getDiscount());
+	
+		// TimeStamp = Parent Product Timestamp
+		$kit_timestamp = $this->getProcessTimestamp();
+	
+		// Setting Meta Data - last_update_api
+		$last_update = new stdClass();
+		$last_update->key = 'last_update_api';
+		$last_update->value = $timestamp;
+	
+		$metaData = array();
+		$metaData[] = $last_update;
+	
+		// API Params
+		if ($this->getUpdateStock() > -1) {
+			// Update Stock
+			$data = [
+					'regular_price' 	=> preg_replace('/[^0-9-.]+/', '', strval($regular_price)),
+					'sale_price' 		=> preg_replace('/[^0-9-.]+/', '', strval($sale_price)),
+					'stock_quantity' 	=> $stock,
+					'in_stock'         	=> $inStock,
+					'meta_data' 		=> $metaData
+			];
+	
+		} else {
+			// Do Not Update Stock
+			$data = [
+					'regular_price' 	=> preg_replace('/[^0-9-.]+/', '', strval($regular_price)),
+					'sale_price' 		=> preg_replace('/[^0-9-.]+/', '', strval($sale_price)),
+					'meta_data' 		=> $metaData
+			];
+		}
+	
+		// WooCommerce Endpoint
+		$endpoint = 'products/' . $prodId;
+	
+		try {
+			// WOOCMMERCE - REST API!!!!
+			$woocommerce = new Client($this->_STORE_URL, $this->_CLIENTKEY, $this->_SECRETKEY, ['wp_api' => true, 'version' => 'wc/v2',  'query_string_auth' => true]);
+	
+			$response = $woocommerce->put($endpoint, $data);
+	
+			if ($response->id == $prodId) {
+				$opResult = WiseClient::_OP_SUCCEDED;
+			} else {
+				throw new CustomException(Messages::RESULT_ERROR);
+			}
+		} catch (Automattic\WooCommerce\HttpClient\HttpClientException $e) {
+			// Producto No Actualizado - FAILURE
+			if ($this->_Logger->isDebugOn()) {
+				$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] processProduct() - ERROR - WooCommerce REST API: " . $e);
+			}
+			$opResult = WiseClient::_OP_FAILED;
+		} catch (Exception $ex) {
+			// Producto No Actualizado - FAILURE
+			if ($this->_Logger->isDebugOn()) {
+				$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] processProduct() - EXCEPTION: " . $ex);
+			}
+			$opResult = WiseClient::_OP_FAILED;
+		} catch (CustomException $ce) {
+			if ($this->_Logger->isDebugOn()) {
+				$this->_Logger->writeLogFile("[DEBUG] - [wiseClient] processProduct() - ERROR - El producto no se ha actualizado: " . $ce->getMessage());
+			}
+			$opResult = WiseClient::_OP_FAILED;
+		} finally {
+			unset($woocommerce);
+		}
+	
+		return $opResult;
+	}
+	
 	protected function processOffLineList($pList) {
 		foreach($pList as $key => $product) {
 			$result = $this->processOffLineProduct($product);
@@ -385,8 +555,8 @@ class WiseClient extends BaseClient{
 		$id	 = $product[0]['value'];
 		$sku = $product[4]['value'];
 		
-		// Check if Product SKY > 10000 (Not a Service or KIT)
-		If (intval($sku) < 10000) {
+		// Check if Product SKU > 99999 (Not a Service or KIT)
+		If (intval($sku) < 100000) {
 			// Product SKU belongs to a Service or KIT
 			$opResult = WiseClient::_OP_DISCARDED;
 			return $opResult;
@@ -433,6 +603,22 @@ class WiseClient extends BaseClient{
 		}
 	
 		return $opResult;
+	}
+	
+	protected function getParentProduct($sku, $pList) {
+		$parent = array();
+	
+		foreach($pList as $key => $product) {
+			if ($sku === $product[4]['value']) {
+				$parent = array(
+						'Regular Price' => $product[6]['value'],
+						'Sale Price' => $product[7]['value'],
+						'Stock' => $product[8]['value']
+				);
+				break;
+			}
+		}
+		return $parent;
 	}
 	
 	protected function printCounters() {

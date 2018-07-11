@@ -21,6 +21,7 @@ class Product {
 	const _lbsale_price		= 'Sale Price';
 	const _lbstock			= 'Stock';
 	const _lbop_timestamp	= 'Operation Timestamp';
+	const _lbparent_sku		= 'Parent SKU';
 	
 	// Product List Array
     protected $aProduct;
@@ -43,7 +44,8 @@ class Product {
     	$regular_price,
     	$sale_price,
     	$stock,
-    	$op_timestamp) {
+    	$op_timestamp,
+    	$parent_sku) {
     		
     	$this->aProduct = array(
     		array('name' => self::_lbid,		 	'value'	=> $id),
@@ -56,6 +58,7 @@ class Product {
     		array('name' => self::_lbsale_price, 	'value'	=> $sale_price),
     		array('name' => self::_lbstock, 		'value'	=> $stock),
     		array('name' => self::_lbop_timestamp, 	'value'	=> $op_timestamp),
+    		array('name' => self::_lbparent_sku, 	'value'	=> $parent_sku),
     	);
     }
     

@@ -248,6 +248,9 @@ enableStuff = function() {
 		case "updateProductsApi":
 			document.getElementById("submit_it").value = "ACTUALIZAR PRODUCTOS";
 			break;
+		case "updateProductKitsApi":
+			document.getElementById("submit_it").value = "ACTUALIZAR KITS DE PRODUCTOS";
+			break;
 		case "getProductsNotInStoreApi":
 			document.getElementById("submit_it").value = "IDENTIFICAR PRODUCTOS QUE NO EXISTEN EN LA TIENDA";
 			break;
@@ -305,6 +308,23 @@ function processResponse(response) {
 									"<td><p class='responseContentValue'>" + responseContent.Failed + "</p></td></tr>" +
 								"<tr><td><p class='responseContentText'>Productos que no existen en la Tienda Online</p></td>" +
 									"<td><p class='responseContentValue'>" + responseContent.Discarded + "</p></td></tr>" +
+							"</table>" + 
+						"</div>";
+			break;
+		case "updateProductKitsApi":
+			html = "<div id='responseMessage'>" +
+				"<p class='response'>KITS de Productos actualizados con exito!</p>" +
+					"</div>" + 
+						"<div id='tableContainer'>" +
+							"<table class='tableContent'>" +
+								"<tr><td><p class='responseContentText'>Modelo Seleccionado</p></td>" + 
+									"<td><p class='responseContentValue'>" + responseContent.Model + "</p></td></tr>" +
+								"<tr><td><p class='responseContentText'>KITS Procesados</p></td>" + 
+									"<td><p class='responseContentValue'>" + responseContent.Total + "</p></td></tr>" +
+								"<tr><td><p class='responseContentText'>KITS Actualizados</p></td>" +
+									"<td><p class='responseContentValue'>" + responseContent.Succeeded + "</p></td></tr>" +
+								"<tr><td><p class='responseContentText'>Actualizaciones Fallidas</p></td>" +
+									"<td><p class='responseContentValue'>" + responseContent.Failed + "</p></td></tr>" +
 							"</table>" + 
 						"</div>";
 			break;

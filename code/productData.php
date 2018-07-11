@@ -51,7 +51,8 @@ class ProductData {
 			// Column 5 - Product SKU
 			$sku = $data[5];
 			// Column 6 - Product List Price
-			$listPrice = preg_replace('/[^0-9-.]+/', '', $data[6]);
+			$lp = str_replace(',', '.', $data[6]);
+			$listPrice = preg_replace('/[^0-9-.]+/', '', $lp);
 			// Column 7  - Product Online Price (SALE)
 			// Column 8  - H30 Not in use
 			// Column 9  - H45 Not in use
@@ -71,6 +72,7 @@ class ProductData {
 					null,
 					null,
 					$stock,
+					null,
 					null);
 	
 			$productList->addProduct($p->getProduct());
@@ -137,6 +139,9 @@ class ProductData {
 			
 			// Column 9 - Product Last Update Timestamp					
 			$timestamp = $data[9];
+			
+			// Column 10 - Product Parent SKU
+			$parent_sku = $data[10];
 						
 			$p = new Product();
 	
@@ -150,7 +155,8 @@ class ProductData {
 					$regularPrice,
 					$salePrice,
 					$stock,
-					$timestamp);
+					$timestamp,
+					$parent_sku);
 	
 			$productList->addProduct($p->getProduct());
 			$count += 1;
@@ -223,7 +229,7 @@ class ProductData {
 					$sku = mysqli_fetch_assoc($r)['meta_value'];
 	
 					// Product Stock
-					$sqlStock = "SELECT meta_value FROM wp_postmeta WHERE wp_postmeta.meta_key = '_stock_quantity' AND wp_postmeta.post_id = " . $id;
+					$sqlStock = "SELECT meta_value FROM wp_postmeta WHERE wp_postmeta.meta_key = '_stock' AND wp_postmeta.post_id = " . $id;
 					$r = $mysqli->query($sqlStock);
 					$stock = mysqli_fetch_assoc($r)['meta_value'];
 	
@@ -241,6 +247,11 @@ class ProductData {
 					$sqlTimestamp = "SELECT meta_value FROM wp_postmeta WHERE wp_postmeta.meta_key = 'last_update_api' AND wp_postmeta.post_id = " . $id;
 					$r = $mysqli->query($sqlTimestamp);
 					$timestamp = mysqli_fetch_assoc($r)['meta_value'];
+					
+					// Product Parent SKU
+					$sqlParentSKU = "SELECT meta_value FROM wp_postmeta WHERE wp_postmeta.meta_key = 'sku_padre' AND wp_postmeta.post_id = " . $id;
+					$r = $mysqli->query($sqlParentSKU);
+					$parent_sku = mysqli_fetch_assoc($r)['meta_value'];
 	
 					$p = new Product();
 	
@@ -254,7 +265,8 @@ class ProductData {
 							$regularPrice,
 							$salePrice,
 							$stock,
-							$timestamp);
+							$timestamp,
+							$parent_sku);
 	
 					$productList->addProduct($p->getProduct());
 					$count += 1;
@@ -299,6 +311,12 @@ class ProductData {
 			$salePrice 		= $product[7]['value'];
 			$stock			= $product[8]['value'];
 			$timestamp	 	= $product[9]['value'];
+			$parent_sku	 	= $product[10]['value'];
+			
+			// Check if Product is not a Service or KIT
+			if ($sku < 100000) {
+				continue;
+			}
 			
 			// Check if Product exists in Store
 			$pd = new ProductData();

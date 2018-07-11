@@ -171,3 +171,18 @@ Stack trace:
 [15-May-2018:19:47:08] [interface] [DEBUG] - [baseClient] exec() - APICALL: setProductsOffLineApi
 [15-May-2018:19:47:08] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Se han leido 2 productos
 [15-May-2018:19:47:08] [interface] [DEBUG] - [productData] getProductsFromOffLineFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\Productos-NoLista.csv
+[28-Jun-2018:16:11:54] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[28-Jun-2018:16:11:54] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductDataApi
+[28-Jun-2018:16:11:54] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 733 productos
+[28-Jun-2018:16:11:54] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[28-Jun-2018:16:11:54] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 
+[28-Jun-2018:16:21:44] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[28-Jun-2018:16:21:44] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductDataApi
+[28-Jun-2018:16:21:44] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 733 productos
+[28-Jun-2018:16:21:44] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[28-Jun-2018:16:21:44] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 
+[28-Jun-2018:17:04:19] [interface] [DEBUG] - [baseClient] _Construct - Client Started for User: integrador
+[28-Jun-2018:17:04:19] [interface] [DEBUG] - [baseClient] exec() - APICALL: getProductDataApi
+[28-Jun-2018:17:04:19] [interface] [DEBUG] - [productData] getProductsFromFile() - Se han leido 733 productos
+[28-Jun-2018:17:04:19] [interface] [DEBUG] - [productData] getProductsFromFile() - Fichero: C:\xampp\htdocs\gestiondeproductos\products\productos.csv
+[28-Jun-2018:17:04:19] [interface] [DEBUG] - [productData] getProductsFromFile() - Modelo: 

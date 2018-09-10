@@ -53,6 +53,7 @@ abstract class BaseClient {
 	// CLIENT REQUEST
 	protected $_PARAMS;
 	protected $_APICALL;			// API Call to process
+	protected $_BRAND;				// Product Brand to Update
 	protected $_MODEL;				// Product Model to Update (TODOS=ALL)
 	protected $_MARGIN;				// Product Margin to apply to List Price (Default=15%)
 	protected $_DISCOUNT;			// Product Discount for online store (Default=20%)
@@ -111,6 +112,7 @@ abstract class BaseClient {
 		$this->_PARAMS = $params;
 		
 		$this->setApiCall($this->_PARAMS['apicall']);
+		$this->setBrand($this->_PARAMS['brand']);
 		$this->setModel($this->_PARAMS['model']);
 		$this->setMargin($this->_PARAMS['margin']);
 		$this->setDiscount($this->_PARAMS['discount']);
@@ -123,6 +125,14 @@ abstract class BaseClient {
 	
 	public function setApiCall($Api) {
 		$this->_APICALL = $Api;
+	}
+	
+	public function getBrand() {
+		return $this->_BRAND;
+	}
+	
+	public function setBrand($brand) {
+		$this->_BRAND = $brand;
 	}
 	
 	public function getModel() {

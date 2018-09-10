@@ -15,53 +15,58 @@ class ProductData {
 		$this->_Logger = new Logger();
 	}
 	
-	// Get Products from File provided based on Search Criteria (Model)
-	public function getProductsFromFile($searchCriteria) {
+	private function readFileForHankook($searchCriteria) {
 		$ini = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/gestiondeproductos/config/app.ini');
-		$fileName = $ini['products_file'];
-		
+		$fileName = $ini['hankook_products_file'];
+				
 		$file = new File();
 		$file->setFile($fileName);
 		$file->openFileForRead();
 		$filePointer = $file->getFilePointer();
-	
+		
 		$productList = new productList();
-	
+		
 		$count = 0;
-	
+		$m = null;
+		
 		while (($data = fgetcsv($filePointer, 1000, ",")) !== FALSE) {
-			if (empty($data[5])) {
+			if (empty($data[2])) {
 				continue;
 			}
-				
-			// Column 0 - Product Model
-			$model = $data[0];
-	
+			
+			// Column 0 - Product SKU
+			$sku = $data[0];
+			
+			// Column 1 - Product Title
+			$title = null;
+			
+			// Column 1 - Could be Product Model
+			$model = null;
+			
+			if (strpos($data[2], 'Precio') !== false) {
+				$m = $data[1];
+			}
+			
+			$model = $m;
+			
+			// Column 2 - Product List Price
+			$lp = str_replace(',', '', $data[2]);
+			$listPrice = preg_replace('/[^0-9-.]+/', '', $lp);
+		
+			// Column 3  - H30 Not in use
+			// Column 4 - H60 Not in use
+					
+			// Column 5 - STOCK - 0 = PAUSADO | Empty OR > 0 = ACTIVO
+			$stock = $data[5];
+		
 			if (!$searchCriteria == "" && !empty($searchCriteria) && $searchCriteria != "TODOS") {
 				if ($searchCriteria != $model){
 					continue;
 				}
 			}
-				
-			// Column 1 - Product Width
-			// Column 2 - Product Length
-			// Column 3 - Product Heigth
-			// Column 4 - Product Title
-			$title = $data[4];
-			// Column 5 - Product SKU
-			$sku = $data[5];
-			// Column 6 - Product List Price
-			$lp = str_replace(',', '.', $data[6]);
-			$listPrice = preg_replace('/[^0-9-.]+/', '', $lp);
-			// Column 7  - Product Online Price (SALE)
-			// Column 8  - H30 Not in use
-			// Column 9  - H45 Not in use
-			// Column 10 - H60 Not in use
-			// Column 11 - STOCK - Valor 0=PAUSADO | vacio o > 0 =ACTIVO
-			$stock = $data[11];
-			
+		
 			$p = new Product();
-	
+		
 			$p->setProduct(
 					null,
 					$model,
@@ -74,25 +79,127 @@ class ProductData {
 					$stock,
 					null,
 					null);
-	
+		
 			$productList->addProduct($p->getProduct());
 			$count += 1;
 		}
-	
+		
 		$file->closeFile();
-	
+		
 		if ($this->_Logger->isDebugOn()) {
-			$this->_Logger->writeLogFile("[DEBUG] - [productData] getProductsFromFile() - Se han leido " . $count . " productos" );
-			$this->_Logger->writeLogFile("[DEBUG] - [productData] getProductsFromFile() - Fichero: " . $file->getFile());
-			$this->_Logger->writeLogFile("[DEBUG] - [productData] getProductsFromFile() - Modelo: " . $searchCriteria);
+			$this->_Logger->writeLogFile("[DEBUG] - [productData] readFileForHankook() - Se han leido " . $count . " productos" );
+			$this->_Logger->writeLogFile("[DEBUG] - [productData] readFileForHankook() - Fichero: " . $file->getFile());
+			$this->_Logger->writeLogFile("[DEBUG] - [productData] readFileForHankook() - Modelo: " . $searchCriteria);
 		}
 		
 		$retVal = array (
 				'products' => $productList->getProductList(),
 				'count' => $productList->getNumObjects()
 		);
-	
+		
 		return $retVal;
+	}
+	
+	private function readFileForLinglong($searchCriteria) {
+		$retVal = array (
+				'products' => null,
+				'count' => null
+		);
+	}
+	
+	private function readFileForYokohama($searchCriteria) {
+		$ini = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/gestiondeproductos/config/app.ini');
+		$fileName = $ini['yokohama_products_file'];
+				
+		$file = new File();
+		$file->setFile($fileName);
+		$file->openFileForRead();
+		$filePointer = $file->getFilePointer();
+		
+		$productList = new productList();
+		
+		$count = 0;
+		
+		while (($data = fgetcsv($filePointer, 1000, ",")) !== FALSE) {
+			if (empty($data[5]) || !ctype_digit($data[5])) {
+				continue;
+			}
+			
+			// Column 0 - Product Model
+			$model = $data[0];
+		
+			if (!$searchCriteria == "" && !empty($searchCriteria) && $searchCriteria != "TODOS") {
+				if ($searchCriteria != $model){
+					continue;
+				}
+			}
+		
+			// Column 1 - Product Width
+			// Column 2 - Product Length
+			// Column 3 - Product Heigth
+			// Column 4 - Product Title
+			$title = $data[4];
+			// Column 5 - Product SKU
+			$sku = $data[5];
+			// Column 6 - Product List Price
+			$lp = str_replace(',', '', $data[6]);
+			$listPrice = preg_replace('/[^0-9-.]+/', '', $lp);
+			// Column 7  - Product Online Price (SALE)
+			// Column 8  - H30 Not in use
+			// Column 9  - H45 Not in use
+			// Column 10 - H60 Not in use
+			// Column 11 - STOCK - 0 = PAUSADO | Empty OR > 0 = ACTIVO
+			$stock = (empty($data[11])) ? null : $data[11];
+				
+			$p = new Product();
+		
+			$p->setProduct(
+					null,
+					$model,
+					$title,
+					null,
+					$sku,
+					$listPrice,
+					null,
+					null,
+					$stock,
+					null,
+					null);
+		
+			$productList->addProduct($p->getProduct());
+			$count += 1;
+		}
+		
+		$file->closeFile();
+		
+		if ($this->_Logger->isDebugOn()) {
+			$this->_Logger->writeLogFile("[DEBUG] - [productData] readFileForYokohama() - Se han leido " . $count . " productos" );
+			$this->_Logger->writeLogFile("[DEBUG] - [productData] readFileForYokohama() - Fichero: " . $file->getFile());
+			$this->_Logger->writeLogFile("[DEBUG] - [productData] readFileForYokohama() - Modelo: " . $searchCriteria);
+		}
+		
+		$retVal = array (
+				'products' => $productList->getProductList(),
+				'count' => $productList->getNumObjects()
+		);
+		
+		return $retVal;
+	}
+	
+	// Get Products from File provided based on Search Criteria (Model)
+	public function getProductsFromFile($brand, $searchCriteria) {
+		switch (intval($brand)) {
+			case 1: // Hankook
+				$retval = $this->readFileForHankook($searchCriteria);
+				break;
+			case 2: // Linglong
+				$retval = $this->readFileForLinglong($searchCriteria);
+				break;
+			case 3: // Yokohama
+				$retval = $this->readFileForYokohama($searchCriteria);
+				break;
+		}
+		return $retval;
 	}
 	
 	// Get Products from File provided based on Search Criteria (Model)

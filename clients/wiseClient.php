@@ -54,7 +54,8 @@ class WiseClient extends BaseClient{
 		$sqlCreateProductsTimestamp = "CREATE TABLE IF NOT EXISTS " . $TABLE_TIMESTAMP . "
 										(`id` INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 										`last_update` INT NOT NULL,
-										`model` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL)
+										`model` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+										`brand` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL)
 										ENGINE=InnoDB";
 
 		// SQL CREATE TABLE - wise_products_nolist
@@ -69,8 +70,8 @@ class WiseClient extends BaseClient{
 										ENGINE=InnoDB";
 
 		// SQL INSERT TIMESTAMP - wise_products_timestamp
-		$sqlInsertTimestamp = "INSERT INTO " . $TABLE_TIMESTAMP . "(`last_update`, `model`) VALUES (" . $this->_TIMESTAMP . ", " . $this->getModel() . ")";
-
+		$sqlInsertTimestamp = "INSERT INTO " . $TABLE_TIMESTAMP . "(`last_update`, `model`, `brand`) VALUES (" . $this->_TIMESTAMP . ", '" . $this->getModel() . "', " . $this->getBrand() . ")";
+		
 		// SQL QUERIES FOR CHECKUPS
 		$sqlSelectProductsTimestamp = "SELECT * FROM " . $TABLE_TIMESTAMP;
 		$sqlSelectProductsNoList = "SELECT count(*) FROM " . $TABLE_PROD_NOLIST;
@@ -113,7 +114,7 @@ class WiseClient extends BaseClient{
 
 	protected function getProductDataApiCall() {
 		$pd = new ProductData();
-		$pl = $pd->getProductsFromFile($this->getModel());
+		$pl = $pd->getProductsFromFile($this->getBrand(), $this->getModel());
 		echo json_encode($pl['products']);
 		return;
 	}
@@ -125,7 +126,7 @@ class WiseClient extends BaseClient{
 		}
 		
 		$pd = new ProductData();
-		$pl = $pd->getProductsFromFile($this->getModel());
+		$pl = $pd->getProductsFromFile($this->getBrand(), $this->getModel());
 		$this->_RESPONSE = $this->process($pl['products']);
 		echo json_encode($this->_RESPONSE);
 		return;
@@ -221,6 +222,7 @@ class WiseClient extends BaseClient{
 		$this->printCounters();
 
 		$response = array(
+				'Brand' => routines::getBrandName($this->getBrand()),
 				'Model' => $this->getModel(),
 				'Succeeded' => $this->countSUCCESS,
 				'Failed' => $this->countFAIL,

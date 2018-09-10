@@ -120,6 +120,7 @@ appRequest.prototype.Callback=function() {
 var form = function() {
 	this.name 			= "";   // Application Name
 	this.apicall		= "";   // API Call to process
+	this.brand			= "";   // Product Brand to Update
 	this.model			= "";   // Product Model to Update (TODOS=ALL)
 	this.margin			= "";   // Product Margin to apply to List Price (Default=15%)
 	this.discount		= "";   // Product Discount for online store (Default=20%)
@@ -143,6 +144,14 @@ form.prototype.setApiCall = function(apicall) {
 
 form.prototype.getApiCall = function() {
 	return this.apicall;
+}
+
+form.prototype.setBrand = function(brand) {
+	this.brand = brand;
+}
+
+form.prototype.getBrand = function() {
+	return this.brand;
 }
 
 form.prototype.setModel = function(model) {
@@ -191,6 +200,7 @@ form.prototype.getFields = function() {
 form.prototype.setFieldData = function() {
 	var f = new productFields();
 	f.id			= null;
+	f.brand			= null;
 	f.model			= null;
 	f.title 		= null;
 	f.status	 	= null;
@@ -206,6 +216,7 @@ form.prototype.setFieldData = function() {
 
 var productFields = function() {
 	this.id				= ""; // Product ID
+	this.brand			= ""; // Product Brand
     this.model			= ""; // Product Model
 	this.title	 		= ""; // Product Title
 	this.status			= ""; // Product Status (Publish / Draft / Private)
@@ -298,6 +309,8 @@ function processResponse(response) {
 					"</div>" + 
 						"<div id='tableContainer'>" +
 							"<table class='tableContent'>" +
+								"<tr><td><p class='responseContentText'>Marca Seleccionada</p></td>" + 
+									"<td><p class='responseContentValue'>" + responseContent.Brand + "</p></td></tr>" +
 								"<tr><td><p class='responseContentText'>Modelo Seleccionado</p></td>" + 
 									"<td><p class='responseContentValue'>" + responseContent.Model + "</p></td></tr>" +
 								"<tr><td><p class='responseContentText'>Productos Procesados</p></td>" + 
@@ -481,6 +494,7 @@ function printResponse(result) {
 function sendData() {
 	var name 		= "gestiondeproductos"
 	var apicall		= document.getElementById("apicall").value;
+	var brand 		= document.getElementById("brand").value;
 	var model 		= document.getElementById("model").value;
 	var margin 		= document.getElementById("margin").value;
 	var discount 	= document.getElementById("discount").value;
@@ -495,6 +509,7 @@ function sendData() {
 	var f = new form();
 	f.setName(name);
 	f.setApiCall(apicall);
+	f.setBrand(brand);
 	f.setModel(model);
 	f.setMargin(margin);
 	f.setDiscount(discount);

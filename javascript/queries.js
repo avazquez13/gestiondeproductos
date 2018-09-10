@@ -1,7 +1,8 @@
-function productModelDataHandler() {
+function productModelDataHandler(brand) {
 	var apicall	= "getProductDataApi";
 	var f = new form();
 	f.setApiCall(apicall);
+	f.setBrand(brand);
 	
 	var queryString = "";
 	
@@ -41,15 +42,17 @@ function productModelDataHandler() {
 function getProductModelList(data) {
 	var ml = [];
 	
-	for (var i = 0; i < data.length; i++) {
-		model = data[i][1]["value"];
-		
-		if (!isInArray(model, ml))
-			ml.push(model);
+	if (data !== null) {
+		for (var i = 0; i < data.length; i++) {
+			model = data[i][1]["value"];
+			
+			if (model != '' && !isInArray(model, ml))
+				ml.push(model);
+		}
+		ml.sort();
+		ml.unshift("TODOS");
+		return ml;
 	}
-	ml.sort();
-	ml.unshift("TODOS");
-	return ml;
 }
 
 function isInArray(value, array) {

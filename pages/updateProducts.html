@@ -10,7 +10,7 @@
 	
 	<script type="text/javascript">
     	function process() {
-    		productModelDataHandler();
+    		//productModelDataHandler();
 		}
     	
 		if (window.addEventListener)
@@ -19,6 +19,19 @@
 			window.attachEvent("onload", process);
 		else window.onload = process;
 	</script>
+	
+	<script type="text/javascript">
+    	function getModelList() {
+    		document.getElementById("model").innerHTML = '';
+    		var select = document.getElementById("model");
+    		select.options[select.options.length] = new Option('Seleccionar', '0');
+    		brand = document.getElementById('brand').value;
+    		
+    		if (brand > 0) {
+    			productModelDataHandler(brand);
+    		}
+    	}
+    </script>
 	
 </head>
 <body>
@@ -38,8 +51,19 @@
     					<input type="hidden" value="updateProductsApi" id="apicall" name="apicall">
     				</div>
     				
+    				<p><span><label for="brand">Marca</label></span>
+	    				<select id="brand" onchange='getModelList()'>
+	    					<option selected="selected" value="0">Seleccionar</option>
+	    					<option value="1">Hankook</option>
+  							<option value="2">Linglong</option>
+  							<option value="3">Yokohama</option>
+	    				</select> 
+					</p>
+    				
     				<p><span><label for="model">Modelo</label></span>
-	    				<select id="model"></select> 
+	    				<select id="model">
+	    					<option selected="selected" value="0">Seleccionar</option>
+	    				</select> 
 					</p>
     				
     				<p><span><label for="margin">Margen (%)</label></span>

@@ -77,7 +77,26 @@ class routines {
 		}
 		return $price;
 	}
+	
+	public static function getBrandName($brand) {
+		$brandName = '';
+		
+		switch ($brand) {
+			case 1:
+				// Hankook
+				$brandName = 'Hankook';
+				break;
+			case 2:
+				// Linglong
+				$brandName = 'Linglong';
+				break;
+			case 3:
+				// Yokohama
+				$brandName = 'Yokohama';
+				break;
+		}
+		
+		return $brandName;
+	}
 }
-
-
 ?>

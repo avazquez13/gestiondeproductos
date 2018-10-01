@@ -7,6 +7,7 @@
 	<script type="text/javascript" src="../javascript/jquery-1.12.2.min.js"></script>
 	<script type="text/javascript" src="../javascript/functions.js"></script> 
 	<script type="text/javascript" src="../javascript/queries.js"></script>	
+		
 </head>
 <body>
     <div class="main">
@@ -28,6 +29,15 @@
     					<input type="hidden" value="" id="discount" name="discount">
     					<input type="hidden" value="" id="updateStock" name="updateStock">
     				</div>
+    				
+    				<p><span><label for="brand">Marca</label></span>
+	    				<select id="brand" onchange='getModelList()'>
+	    					<option selected="selected" value="0">Seleccionar</option>
+	    					<option value="1">Hankook</option>
+  							<option value="2">Linglong</option>
+  							<option value="3">Yokohama</option>
+	    				</select> 
+					</p>
     				
     				<p><input type="button" class="btn" value="IDENTIFICAR PRODUCTOS QUE NO EXISTEN EN LA LISTA" id="submit_it" name="submit" onclick="sendData();"></p>
     			</form>

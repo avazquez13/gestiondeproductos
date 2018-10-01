@@ -142,15 +142,27 @@ class WiseClient extends BaseClient{
 
 	protected function getProductsNotInStoreApiCall() {
 		$pd = new ProductData();
-		$pl = $pd->getProductsFromFile($this->getModel());
+		$pl = $pd->getProductsFromFile($this->getBrand(), $this->getModel());
 		$aNoStore = $pd->findProductsNotInStore($pl['products']);
 		
+		switch (intval($this->getBrand())) {
+			case 1: // Hankook
+				$filename = $this->_HANKOOK_NOSTORE_FILENAME;
+				break;
+			case 2: // Linglong
+				$filename = $this->_LINGLONG_NOSTORE_FILENAME;
+				break;
+			case 3: // Yokohama
+				$filename = $this->_YOKOHAMA_NOSTORE_FILENAME;
+				break;
+		}
+		
 		$reports = new reports();
-		$this->_RESPONSE = $reports->generateNoStoreReport($aNoStore, $this->_NOSTORE_FILENAME);
-		$this->_RESPONSE['Model'] = $this->getModel();
+		$this->_RESPONSE = $reports->generateNoStoreReport($aNoStore, $filename);
+		$this->_RESPONSE['Model'] = ($this->getModel() != null ? $this->getModel() : 'TODOS');
 		
 		$mail = new SendEmail();
-		$mail->setAttachment($this->_NOSTORE_FILENAME);
+		$mail->setAttachment($filename);
 		$mail->setSubject("GESTION DE PRODUCTOS | Productos que no han sido ingresados en la TIENDA");
 		
 		if ($mail->sendEmailNotification()) {
@@ -165,17 +177,29 @@ class WiseClient extends BaseClient{
 	
 	protected function getProductsNotInFileApiCall() {
 		$pdFile = new ProductData();
-		$prodcutsFromFile = $pdFile->getProductsFromFile($this->getModel());
+		$prodcutsFromFile = $pdFile->getProductsFromFile($this->getBrand(), $this->getModel());
 		
 		$pdDB = new ProductData();
-		$prodcutsFromStore = $pdDB->getProductsFromStore($this->getModel());
+		$prodcutsFromStore = $pdDB->getProductsFromStore();
+		
+		switch (intval($this->getBrand())) {
+			case 1: // Hankook
+				$filename = $this->_HANKOOK_NOFILE_FILENAME;
+				break;
+			case 2: // Linglong
+				$filename = $this->_LINGLONG_NOFILE_FILENAME;
+				break;
+			case 3: // Yokohama
+				$filename = $this->_YOKOHAMA_NOFILE_FILENAME;
+				break;
+		}
 		
 		$reports = new reports();
-		$this->_RESPONSE = $reports->generateNoFileReport($prodcutsFromFile, $prodcutsFromStore, $this->_NOFILE_FILENAME);
+		$this->_RESPONSE = $reports->generateNoFileReport($prodcutsFromFile, $prodcutsFromStore, $filename);
 		$this->_RESPONSE['Model'] = ($this->getModel() != null ? $this->getModel() : 'TODOS');
 		
 		$mail = new SendEmail();
-		$mail->setAttachment($this->_NOFILE_FILENAME);
+		$mail->setAttachment($filename);
 		$mail->setSubject("GESTION DE PRODUCTOS | Productos de la TIENDA que no existen en la LISTA de Precios");
 		
 		if ($mail->sendEmailNotification()) {
@@ -188,8 +212,20 @@ class WiseClient extends BaseClient{
 	}
 
 	protected function setProductsOffLineApiCall() {
+		switch (intval($this->getBrand())) {
+			case 1: // Hankook
+				$filename = $this->_HANKOOK_NOFILE_FILENAME;
+				break;
+			case 2: // Linglong
+				$filename = $this->_LINGLONG_NOFILE_FILENAME;
+				break;
+			case 3: // Yokohama
+				$filename = $this->_YOKOHAMA_NOFILE_FILENAME;
+				break;
+		}
+		
 		$pd = new ProductData();
-		$pl = $pd->getProductsFromOffLineFile($this->getModel());
+		$pl = $pd->getProductsFromOffLineFile($filename);
 		$this->_RESPONSE = $this->processOffLineList($pl['products']);
 		echo json_encode($this->_RESPONSE);
 		return;

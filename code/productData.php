@@ -57,7 +57,8 @@ class ProductData {
 			// Column 4 - H60 Not in use
 					
 			// Column 5 - STOCK - 0 = PAUSADO | Empty OR > 0 = ACTIVO
-			$stock = $data[5];
+			//$stock = $data[5];
+			$stock = (empty($data[5])) ? null : $data[5];
 		
 			if (!$searchCriteria == "" && !empty($searchCriteria) && $searchCriteria != "TODOS") {
 				if ($searchCriteria != $model){
@@ -186,7 +187,7 @@ class ProductData {
 		return $retVal;
 	}
 	
-	// Get Products from File provided based on Search Criteria (Model)
+	// Get Products from File provided based on Search Criteria (Brand & Model)
 	public function getProductsFromFile($brand, $searchCriteria) {
 		switch (intval($brand)) {
 			case 1: // Hankook
@@ -203,12 +204,9 @@ class ProductData {
 	}
 	
 	// Get Products from File provided based on Search Criteria (Model)
-	public function getProductsFromOffLineFile() {
-		$ini = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/gestiondeproductos/config/app.ini');
-		$fileName = $ini['nolist_file'];
-		
+	public function getProductsFromOffLineFile($filename) {
 		$file = new File();
-		$file->setFile($fileName);
+		$file->setFile($filename);
 		$file->openFileForRead();
 		$filePointer = $file->getFilePointer();
 	
@@ -233,7 +231,7 @@ class ProductData {
 			$sku = $data[4];
 			
 			// Column 5 - Product List Price
-			$listPrice = $data[5];
+			$listPrice = (empty($data[5])) ? null : $data[5];
 			
 			// Column 6 - Product Regular Price
 			$regularPrice = $data[6];
@@ -245,10 +243,10 @@ class ProductData {
 			$stock = $data[8];
 			
 			// Column 9 - Product Last Update Timestamp					
-			$timestamp = $data[9];
+			$timestamp = (empty($data[9])) ? null : $data[9];
 			
 			// Column 10 - Product Parent SKU
-			$parent_sku = $data[10];
+			$parent_sku = (empty($data[10])) ? null : $data[10];
 						
 			$p = new Product();
 	
@@ -284,8 +282,8 @@ class ProductData {
 		return $retVal;
 	}
 	
-	// Get Products from Database based on Search Criteria (Model)
-	public function getProductsFromStore($searchCriteria) {
+	// Get Products from Database based on Search Criteria (Brand & Model)
+	public function getProductsFromStore() {
 		$productList = new productList();
 		$count = 0;
 		
@@ -305,12 +303,6 @@ class ProductData {
 						p.post_type =  'product' AND 
 						tt.taxonomy = 'pa_model'";
 		
-		if (!$searchCriteria == "" && !empty($searchCriteria) && $searchCriteria != "TODOS") {
-			$sql = $sqlProduct . " AND t.name = " . $searchCriteria;
-		} else {
-			$sql = $sqlProduct;
-		}
-	
 		try {
 			$db = database::getInstance();
 			$mysqli = $db->getConnection();

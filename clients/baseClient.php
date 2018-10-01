@@ -38,8 +38,15 @@ abstract class BaseClient {
 	protected $_CLIENTKEY;
 	protected $_SECRETKEY;
 	protected $_STORE_URL;
-	protected $_NOSTORE_FILENAME;
-	protected $_NOFILE_FILENAME;
+	
+	protected $_HANKOOK_NOSTORE_FILENAME;
+	protected $_HANKOOK_NOFILE_FILENAME;
+	
+	protected $_LINGLONG_NOSTORE_FILENAME;
+	protected $_LINGLONG_NOFILE_FILENAME;
+	
+	protected $_YOKOHAMA_NOSTORE_FILENAME;
+	protected $_YOKOHAMA_NOFILE_FILENAME;
 	
 	// LOGGING OBJECT
 	protected $_Logger;
@@ -100,8 +107,14 @@ abstract class BaseClient {
 		$this->_SECRETKEY 	= $ini['secret_key'];
 		$this->_STORE_URL 	= $ini['store_url'];
 		
-		$this->_NOSTORE_FILENAME = $ini['nostore_file'];
-		$this->_NOFILE_FILENAME = $ini['nolist_file'];
+		$this->_HANKOOK_NOSTORE_FILENAME = $ini['hankook_nostore_file'];
+		$this->_HANKOOK_NOFILE_FILENAME = $ini['hankook_nolist_file'];
+		
+		$this->_LINGLONG_NOSTORE_FILENAME = $ini['linglong_nostore_file'];
+		$this->_LINGLONG_NOFILE_FILENAME = $ini['linglong_nolist_file'];
+		
+		$this->_YOKOHAMA_NOSTORE_FILENAME = $ini['yokohama_nostore_file'];
+		$this->_YOKOHAMA_NOFILE_FILENAME = $ini['yokohama_nolist_file'];
 	}
 	
 	public function getParams() {

@@ -36,13 +36,19 @@
     			<form method="post"  enctype="multipart/form-data" name="listProductsForm" id="listProductsForm" >
     				<div style="display: none;">
     					<input type="hidden" value="getProductsNotInStoreApi" id="apicall" name="apicall">
+    					<input type="hidden" value="" id="model" name="model">
     					<input type="hidden" value="" id="margin" name="margin">
     					<input type="hidden" value="" id="discount" name="discount">
     					<input type="hidden" value="" id="updateStock" name="updateStock">
     				</div>
     				
-    				<p><span><label for="model">Modelo</label></span>
-	    				<select id="model"></select> 
+    				<p><span><label for="brand">Marca</label></span>
+	    				<select id="brand" onchange='getModelList()'>
+	    					<option selected="selected" value="0">Seleccionar</option>
+	    					<option value="1">Hankook</option>
+  							<option value="2">Linglong</option>
+  							<option value="3">Yokohama</option>
+	    				</select> 
 					</p>
     				
     				<p><input type="button" class="btn" value="IDENTIFICAR PRODUCTOS QUE NO EXISTEN EN TIENDA" id="submit_it" name="submit" onclick="sendData();"></p>

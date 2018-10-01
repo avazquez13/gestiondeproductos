@@ -30,7 +30,7 @@ class SendEmail {
 		$this->setSendFrom($ini['email_sendFrom']);
 		$this->setReplyTo($ini['email_replyTo']);
 		$this->setNameFrom($ini['email_nameFrom']);
-		$this->setHtmlURL($ini['store_url'] . $ini['email_template_url']);
+		$this->setHtmlURL($ini['email_template_url']);
 		$this->setHost($ini['email_host']);
 		$this->setUser($ini['email_username']);
 		$this->setPass($ini['email_password']);
